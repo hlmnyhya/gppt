@@ -151,16 +151,6 @@
                                 class="icon icon-form"></i><span class="nav-text">Layanan</span></a>
                         <ul aria-expanded="false">
                             <li><a href="<?= base_url('user/permohonan')?>">Permohonan Layanan</a></li>
-                            <!-- <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Permohonan Layanan</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./email-compose.html">Compose</a></li>
-                                    <li><a href="./email-inbox.html">Inbox</a></li>
-                                    <li><a href="./email-read.html">Read</a></li>
-                                </ul>
-                            </li> -->
-                            <!-- <li><a href="./form-editor-summernote.html">Summernote</a></li>
-                            <li><a href="form-pickers.html">Pickers</a></li>
-                            <li><a href="form-validation-jquery.html">Jquery Validate</a></li> -->
                         </ul>
                     </li>
                     <!-- <li class="nav-label">Table</li>

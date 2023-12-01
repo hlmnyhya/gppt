@@ -147,23 +147,13 @@
                     </li>
                     <li><a href="widget-basic.html" aria-expanded="false"><i class="icon icon-globe-2"></i><span
                                 class="nav-text">Widget</span></a></li> -->
-                    <li class="nav-label">Layanan</li>
+                    <!-- <li class="nav-label">Layanan</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-form"></i><span class="nav-text">Layanan</span></a>
                         <ul aria-expanded="false">
                             <li><a href="<?= base_url('admin/permohonan')?>">Permohonan Layanan</a></li>
-                            <!-- <li><a class="has-arrow" href="javascript:void()" aria-expanded="false">Permohonan Layanan</a>
-                                <ul aria-expanded="false">
-                                    <li><a href="./email-compose.html">Compose</a></li>
-                                    <li><a href="./email-inbox.html">Inbox</a></li>
-                                    <li><a href="./email-read.html">Read</a></li>
-                                </ul>
-                            </li> -->
-                            <!-- <li><a href="./form-editor-summernote.html">Summernote</a></li>
-                            <li><a href="form-pickers.html">Pickers</a></li>
-                            <li><a href="form-validation-jquery.html">Jquery Validate</a></li> -->
                         </ul>
-                    </li>
+                    </li> -->
                     <!-- <li class="nav-label">Table</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-layout-25"></i><span class="nav-text">Table</span></a>
