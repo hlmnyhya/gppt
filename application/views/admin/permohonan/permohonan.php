@@ -41,6 +41,7 @@
                                         <th>Pemohon</th>
                                         <th>Nama Layanan</th>
                                         <th>Jenis Layanan</th>
+                                        <th>Syarat Layanan</th>
                                         <th class="text-center">Status Permohonan</th>
                                         <th class="text-center">Status Antrian</th>
                                         <th>Berkas</th>
@@ -55,6 +56,7 @@
                                             <td><?= $user->nama; ?></td>
                                             <td><?= $user->nama_layanan; ?></td>
                                             <td><?= $user->nama_layanan_detail; ?></td>
+                                            <td><?php echo nl2br(implode(explode('<br>', $user->syarat))); ?></td>
                                             <td>
                                                 <center>
                                             <?php
@@ -92,25 +94,41 @@
                                             </center>
                                             </td>
                                             <td>
-                                                <?php
-                                                    $id_permohonan = $user->id_permohonan;
-                                                    // Tambahkan kondisi untuk mengecek apakah ada data berkas berdasarkan id_permohonan
-                                                    $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
-                                                                                        
-                                                    if ($hasBerkas) {
-                                                        // Jika ada data berkas, tampilkan tombol "Lihat Berkas"
-                                                        echo '<a type="button" href="'.base_url('admin/permohonan/detail_berkas/'.$id_permohonan).'" class="btn btn-info"><i class="mdi mdi-eye"></i> <span>Lihat Berkas</span></a>';
-                                                    }
-                                                
-                                                    // Tambahkan kondisi untuk mengecek apakah data berkas kosong
-                                                    $isBerkasEmpty = !$hasBerkas;
-                                                
-                                                    if ($isBerkasEmpty) {
-                                                        // Jika data berkas kosong, tampilkan tombol "Tambah Data"
-                                                        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUploadBerkas"><i class="mdi mdi-plus"></i> <span>Tambah Data</span></button>';
-                                                    }
-                                                ?>
-                                            </td>
+                                            <?php
+                                            $id_permohonan = $user->id_permohonan;
+                                            $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
+
+                                            echo '<div class="form-group">';
+                                            echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '"                                        required>';
+
+                                            // Retrieve existing files and display them
+                                            $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
+
+                                            if ($existingFiles) {
+                                                echo '<div class="row mb-3">';
+                                                foreach ($existingFiles as $file) {
+                                                    echo '<div class="col-md-6">';
+                                                    echo '<div class="d-flex justify-content-between align-items-center">';
+                                                    echo '<span>' . $file->file . '</span>';
+                                                    // Add a delete button for each file
+                                                    echo '<a class="btn btn-sm btn-danger" href="' . base_url('ADMIN/Berkas/delete_berkas/' . $file->id_berkas) . '"><i                                         class="mdi mdi-delete"></i></a>';
+                                                    echo '</div>';
+                                                    echo '</div>';
+                                                }
+                                                echo '</div>';
+                                            }
+                                        
+                                            echo '<div id="demo-upload" class="dropzone needsclick">';
+                                            echo '<div class="dz-message needsclick">';
+                                            echo 'Klik atau Tarik File Kesini.';
+                                            echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                        
+                                            echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
+                                            echo '</div>';
+                                            ?>
+                                        </td>
                                             <td>
                                                 <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdatePermohonan" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
                                                 <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a>
@@ -394,10 +412,12 @@
     Dropzone.autoDiscover = false;
 
     var file_upload = new Dropzone('#demo-upload', {
+        // Dropzone configuration options
         url: "<?= base_url('ADMIN/Berkas/proses_upload'); ?>",
         method: "post",
         paramName: "userFile",
         addRemoveLinks: true,
+        autoProcessQueue: false, // Disable auto-upload
     });
 
     file_upload.on('sending', function (a, b, c) {
@@ -412,18 +432,47 @@
     });
 
     file_upload.on('removedfile', function (a) {
-        var token = a.token;
+        // Code to remove file from the server
+    });
+
+    // Event listener for the trigger button
+    document.getElementById('uploadTrigger').addEventListener('click', function () {
+        // Process and upload files
+        file_upload.processQueue();
+    });
+</script>
+<script>
+    // Your existing Dropzone initialization script
+
+    // Event listener for the trigger button
+    document.getElementById('uploadTrigger').addEventListener('click', function () {
+        // Process and upload files
+        file_upload.processQueue();
+    });
+
+    // Retrieve existing files from the server and display them in Dropzone
+    Dropzone.on('init', function () {
+        var id_permohonan = document.getElementById('id_permohonan').value;
+
+        // Ajax request to fetch existing files for the specific id_permohonan
         $.ajax({
+            url: "<?= base_url('ADMIN/Berkas/get_existing_files'); ?>",
             type: "post",
-            data: { token: token },
-            url: "<?= base_url('ADMIN/Berkas/remove_berkas'); ?>",
-            cache: false,
+            data: { id_permohonan: id_permohonan },
             dataType: "json",
-            success: function () {
-                console.log('file berhasil dihapus');
+            success: function (response) {
+                if (response.success) {
+                    // Display existing files in Dropzone
+                    response.files.forEach(function (file) {
+                        var mockFile = { name: file.nama_file, size: file.ukuran_file };
+                        file_upload.emit('addedfile', mockFile);
+                        file_upload.emit('thumbnail', mockFile, file.thumbnail_url);
+                        file_upload.emit('complete', mockFile);
+                    });
+                }
             },
             error: function () {
-                console.log('gagal dihapus');
+                console.log('Failed to fetch existing files.');
             }
         });
     });

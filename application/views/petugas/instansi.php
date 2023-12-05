@@ -81,6 +81,10 @@
                 <!-- Form Tambah Instansi -->
                 <form id="formTambahData" action="<?= base_url('admin/instansi/tambah')?>" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
+                        <label for="kode">Kode</label>
+                        <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode" required>
+                    </div>    
+                    <div class="form-group">
                         <label for="instansi">Instansi</label>
                         <input type="text" class="form-control" id="instansi" name="nama_instansi" placeholder="Nama Instansi" required>
                     </div>
@@ -111,6 +115,10 @@
                 <!-- Form Update Instansi -->
                 <form id="formUpdateInstansi" action="<?= base_url('admin/instansi/ubah')?>" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id_instansi" id="id_instansi" value="<?= $user->id_instansi?>">
+                    <div class="form-group">
+                        <label for="kode">Kode</label>
+                        <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode" required>
+                    </div>
                     <div class="form-group">
                         <label for="instansi">Instansi</label>
                         <input type="text" class="form-control" id="instansi" name="nama_instansi" placeholder="Nama Instansi" required>

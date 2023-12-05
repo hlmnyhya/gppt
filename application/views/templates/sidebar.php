@@ -95,6 +95,7 @@
                             <li><a href="<?= base_url('admin/layanan_detail')?>">Detail Layanan</a></li>
                             <li><a href="<?= base_url('admin/berita')?>">Berita</a></li>
                             <li><a href="<?= base_url('admin/syarat')?>">Syarat</a></li>
+                            <li><a href="<?= base_url('admin/komentar')?>">Komentar</a></li>
                             <li><a href="<?= base_url('admin/galeri')?>">Galeri</a></li>
                             <li><a href="<?= base_url('admin/users')?>">Users</a></li>
                         </ul>
@@ -147,13 +148,13 @@
                     </li>
                     <li><a href="widget-basic.html" aria-expanded="false"><i class="icon icon-globe-2"></i><span
                                 class="nav-text">Widget</span></a></li> -->
-                    <!-- <li class="nav-label">Layanan</li>
+                    <li class="nav-label">Layanan</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-form"></i><span class="nav-text">Layanan</span></a>
                         <ul aria-expanded="false">
                             <li><a href="<?= base_url('admin/permohonan')?>">Permohonan Layanan</a></li>
                         </ul>
-                    </li> -->
+                    </li>
                     <!-- <li class="nav-label">Table</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-layout-25"></i><span class="nav-text">Table</span></a>

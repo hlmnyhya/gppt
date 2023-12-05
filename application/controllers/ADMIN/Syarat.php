@@ -19,20 +19,10 @@ public function tambah_data_aksi()
 {
     $id_layanan_detail = $this->input->post('id_layanan_detail');
     $syarat = htmlspecialchars($this->input->post('syarat'));
-    $penjelasan = htmlspecialchars($this->input->post('penjelasan'));
-    $dasar_hukum = htmlspecialchars($this->input->post('dasar_hukum'));
-    $prosedur = $this->input->post('prosedur');
-    $jangka_waktu = htmlspecialchars($this->input->post('jangka_waktu'));
-    $biaya = htmlspecialchars($this->input->post('biaya'));
 
     $data = array(
         'id_layanan_detail' => $id_layanan_detail,
         'syarat' => $syarat,
-        'penjelasan' => $penjelasan,
-        'dasar_hukum' => $dasar_hukum,
-        'prosedur' => $prosedur,
-        'jangka_waktu' => $jangka_waktu,
-        'biaya' => $biaya,
     );
 
     $inserted = $this->M_syarat->insert_data($data, 'syarat');
@@ -63,20 +53,10 @@ public function update_data_aksi()
     $id_syarat = $this->input->post('id_syarat');
     $id_layanan_detail = $this->input->post('id_layanan_detail');
     $syarat = htmlspecialchars($this->input->post('syarat'));
-    $penjelasan = htmlspecialchars($this->input->post('penjelasan'));
-    $dasar_hukum = htmlspecialchars($this->input->post('dasar_hukum'));
-    $prosedur = $this->input->post('prosedur');
-    $jangka_waktu = htmlspecialchars($this->input->post('jangka_waktu'));
-    $biaya = htmlspecialchars($this->input->post('biaya'));
 
     $data = array(
         'id_layanan_detail' => $id_layanan_detail,
         'syarat' => $syarat,
-        'penjelasan' => $penjelasan,
-        'dasar_hukum' => $dasar_hukum,
-        'prosedur' => $prosedur,
-        'jangka_waktu' => $jangka_waktu,
-        'biaya' => $biaya,
     );
 
     $where = array('id_syarat' => $id_syarat);

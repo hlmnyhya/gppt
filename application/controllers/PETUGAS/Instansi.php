@@ -16,6 +16,7 @@ class Instansi extends CI_Controller {
     public function tambah_data_aksi()
     {
     $nama_instansi = htmlspecialchars($this->input->post('nama_instansi'));
+    $kode = htmlspecialchars($this->input->post('kode'));
 
     // Menggunakan $_FILES untuk mendapatkan informasi upload file
     $gambar_instansi = $_FILES['gambar_instansi']['name'];
@@ -38,6 +39,7 @@ class Instansi extends CI_Controller {
 
         $data = array(
             'nama_instansi' => $nama_instansi,
+            'kode' => $kode,
             'gambar_instansi' => $gambar
         );
 
@@ -68,6 +70,7 @@ class Instansi extends CI_Controller {
     $id_instansi = $this->input->post('id_instansi'); // Ambil ID dari form
 
     $nama_instansi = htmlspecialchars($this->input->post('nama_instansi'));
+    $kode = htmlspecialchars($this->input->post('kode'));
 
     // Menggunakan $_FILES untuk mendapatkan informasi upload file
     $gambar_instansi = $_FILES['gambar_instansi']['name'];
@@ -98,6 +101,7 @@ class Instansi extends CI_Controller {
     // Proses update data
     $data = array(
         'nama_instansi' => $nama_instansi,
+        'kode' => $kode,
     );
 
     if (!empty($gambar)) {

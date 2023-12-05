@@ -38,8 +38,10 @@ class Berkas extends CI_Controller {
         $this->db->insert('berkas', $data);
 
         echo json_encode(array('success' => true));
+        redirect('user/permohonan');
     } else {
         echo json_encode(array('error' => $this->upload->display_errors()));
+        redirect('user/permohonan');
     }
 }
 
@@ -63,10 +65,23 @@ public function remove_berkas()
         $this->db->trans_complete(); // Complete database transaction
 
         $this->output->set_content_type('application/json')->set_output(json_encode(array('success' => true)));
+
+        // Redirect to user/permohonan after successful removal
+        redirect('user/permohonan');
     } else {
         $this->db->trans_rollback(); // Rollback the transaction in case of an error
         $this->output->set_content_type('application/json')->set_output(json_encode(array('error' => 'File not found')));
+
+        // Redirect to user/permohonan even if there is an error (adjust as needed)
+        redirect('user/permohonan');
     }
 }
+
+    public function delete_berkas($id_berkas)
+    {
+        $where = array('id_berkas' => $id_berkas);
+        $this->M_gallery->delete_data($where, 'berkas');
+        redirect('user/permohonan');
+    }
 
 }

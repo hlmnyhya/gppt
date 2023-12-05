@@ -22,7 +22,10 @@ class M_permohonan extends CI_Model
     l.gambar_layanan, 
     ld.nama_layanan_detail, 
     ld.deskripsi_layanan_detail, 
-    ld.gambar_layanan_detail
+    ld.gambar_layanan_detail,
+    s.id_syarat, 
+    s.id_layanan_detail AS syarat_id_layanan_detail, 
+    s.syarat
 FROM 
     permohonan AS p
 JOIN 
@@ -30,7 +33,9 @@ JOIN
 JOIN 
     layanan_detail AS ld ON p.id_layanan_detail = ld.id_layanan_detail
 JOIN
-    antrian AS a ON p.id_user = a.id_user;")->result();
+    antrian AS a ON p.id_user = a.id_user
+JOIN
+    syarat AS s ON ld.id_layanan_detail = s.id_layanan_detail;")->result();
     }
 
     public function show_data_by_user()
@@ -61,7 +66,9 @@ JOIN
     u.email, 
     u.nomor_telepon, 
     u.id_level, 
-    u.gambar_user
+    u.gambar_user,
+    s.id_syarat,
+    s.syarat
 FROM 
     antrian AS a
 LEFT JOIN
@@ -71,7 +78,10 @@ LEFT JOIN
 LEFT JOIN 
     layanan_detail AS ld ON p.id_layanan_detail = ld.id_layanan_detail
 LEFT JOIN
-    users AS u ON p.id_user = u.id_user;")->result();
+    users AS u ON p.id_user = u.id_user
+LEFT JOIN
+    syarat AS s ON ld.id_layanan_detail = s.id_layanan_detail;
+;")->result();
     }
 
     public function insert_data($data, $table)

@@ -137,21 +137,6 @@
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#tab0">Syarat</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab1">Penjelasan</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab2">Dasar Hukum</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab3">Prosedur</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab4">Jangka Waktu</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-bs-toggle="tab" href="#tab5">Biaya</a>
-            </li>
         </ul>
 
         <!-- Tab Content -->
@@ -176,33 +161,9 @@
         <?php endif; ?>
     <?php endforeach; ?>
 </div>
-
-
-            <div class="tab-pane fade" id="tab1">
-               <p><?php echo isset($data_syarat['penjelasan']) ? $data_syarat['penjelasan'] : 'No data available for Penjelasan'; ?></p>
-            </div>
-            <div class="tab-pane fade" id="tab2">
-                <p><?php echo isset($data_syarat['dasar_hukum']) ? $data_syarat['dasar_hukum'] : 'No data available for Dasar Hukum'; ?></p>
-            </div>
-            <div class="tab-pane fade" id="tab3">
-                <p><?php echo isset($data_syarat['prosedur']) ? $data_syarat['prosedur'] : 'No data available for Prosedur'; ?></p>
-            </div>
-            <div class="tab-pane fade" id="tab4">
-                 <p><?php echo isset($data_syarat['jangka_waktu']) ? $data_syarat['jangka_waktu'] : 'No data available for Jangka Waktu'; ?></p>
-            </div>
-            <div class="tab-pane fade" id="tab5">
-                <p><?php echo isset($data_syarat['biaya']) ? $data_syarat['biaya'] : 'No data available for Biaya'; ?></p>
-            </div>
         </div>
     </div>
 </section>
-
-
-
-
-
-
-
 
 
 

@@ -90,26 +90,6 @@
         <label for="syarat">Syarat</label>
         <textarea class="form-control" id="syarat" name="syarat" placeholder="Isi Syarat" required></textarea>
     </div>
-    <div class="form-group">
-        <label for="penjelasan">Penjelasan</label>
-        <textarea class="form-control" id="penjelasan" name="penjelasan" placeholder="Penjelasan" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="dasar_hukum">Dasar Hukum</label>
-        <textarea class="form-control" id="dasar_hukum" name="dasar_hukum" placeholder="Dasar Hukum" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="prosedur">Prosedur</label>
-        <textarea class="form-control" id="prosedur" name="prosedur" placeholder="Prosedur" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="jangka_waktu">Jangka Waktu</label>
-        <textarea class="form-control" id="jangka_waktu" name="jangka_waktu" placeholder="Jangka Waktu" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="biaya">Biaya</label>
-        <textarea class="form-control" id="biaya" name="biaya" placeholder="Biaya" required></textarea>
-    </div>
     <button type="submit" class="btn btn-success text-white">Simpan</button>
 </form>
 
@@ -145,26 +125,6 @@
     <div class="form-group">
         <label for="syarat">Syarat</label>
         <textarea class="form-control" id="syarat" name="syarat" placeholder="Isi Syarat" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="penjelasan">Penjelasan</label>
-        <textarea class="form-control" id="penjelasan" name="penjelasan" placeholder="Penjelasan" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="dasar_hukum">Dasar Hukum</label>
-        <textarea class="form-control" id="dasar_hukum" name="dasar_hukum" placeholder="Dasar Hukum" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="prosedur">Prosedur</label>
-        <textarea class="form-control" id="prosedur" name="prosedur" placeholder="Prosedur" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="jangka_waktu">Jangka Waktu</label>
-        <textarea class="form-control" id="jangka_waktu" name="jangka_waktu" placeholder="Jangka Waktu" required></textarea>
-    </div>
-    <div class="form-group">
-        <label for="biaya">Biaya</label>
-        <textarea class="form-control" id="biaya" name="biaya" placeholder="Biaya" required></textarea>
     </div>
     <button type="submit" class="btn btn-success text-white">Simpan</button>
 </form>
@@ -205,7 +165,7 @@
             // Menangani aksi penghapusan setelah konfirmasi
             $('.btn-hapus-confirm').click(function () {
                 // Kirim permintaan penghapusan ke server
-                window.location.href = '<?= base_url('admin/syarat/delete/') ?>' + idSyarat;
+                window.location.href = '<?= base_url('petugas/syarat/delete/') ?>' + idSyarat;
             });
         });
     });

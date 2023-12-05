@@ -36,4 +36,18 @@ class M_syarat extends CI_Model
         $this->db->where($where);
         $this->db->delete($table);
     }
+    public function deleteFile($id_permohonan, $fileId) {
+        // Validate user permissions (you may implement your own logic)
+        // Add your authentication and authorization checks here
+
+        // Assuming you have a 'berkas' table with columns 'id', 'id_permohonan', etc.
+        // Adjust this query based on your actual database schema
+        $this->db->where('id_permohonan', $id_permohonan);
+        $this->db->where('id', $fileId);
+        $this->db->delete('berkas');
+
+        // Check the affected rows to determine the success of the deletion
+        return $this->db->affected_rows() > 0;
+    }
+
 }

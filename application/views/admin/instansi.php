@@ -36,6 +36,7 @@
                                         <thead>
                                             <tr>
                                                 <th>No</th>
+                                                <th>Kode</th>
                                                 <th>Instansi</th>
                                                 <th>Gambar</th>
                                                 <th>Aksi</th>
@@ -46,6 +47,7 @@
                                                 <tr>
                                                     <td><?php echo $no++ ?></td>    
                                                     <td><?php echo $user->nama_instansi; ?></td>
+                                                    <td><?php echo $user->kode; ?></td>
                                                     <td><img src="<?php echo base_url('./uploads/instansi/'.$user->gambar_instansi); ?>" width="100px" height="120px" alt="Gambar User"></td>
                                                     <td>
                                                         <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateInstansi" data-id="<?= $user->id_instansi ?>" data-nama="<?= $user->nama_instansi ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
@@ -81,6 +83,10 @@
                 <!-- Form Tambah Instansi -->
                 <form id="formTambahData" action="<?= base_url('admin/instansi/tambah')?>" method="POST" enctype="multipart/form-data">
                     <div class="form-group">
+                        <label for="kode">Kode</label>
+                        <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode" required>
+                    </div>
+                    <div class="form-group">
                         <label for="instansi">Instansi</label>
                         <input type="text" class="form-control" id="instansi" name="nama_instansi" placeholder="Nama Instansi" required>
                     </div>
@@ -111,6 +117,10 @@
                 <!-- Form Update Instansi -->
                 <form id="formUpdateInstansi" action="<?= base_url('admin/instansi/ubah')?>" method="POST" enctype="multipart/form-data">
                     <input type="hidden" name="id_instansi" id="id_instansi" value="<?= $user->id_instansi?>">
+                    <div class="form-group">
+                        <label for="kode">Kode</label>
+                        <input type="text" class="form-control" id="kode" name="kode" placeholder="Kode" required>
+                    </div>
                     <div class="form-group">
                         <label for="instansi">Instansi</label>
                         <input type="text" class="form-control" id="instansi" name="nama_instansi" placeholder="Nama Instansi" required>

@@ -26,6 +26,9 @@
 <!--**********************************
     Scripts
 ***********************************-->
+<!-- Emoji -->
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+
 <!-- Required vendors -->
 <script src="<?= base_url('assets/vendor/global/global.min.js'); ?>"></script>
 <script src="<?= base_url('assets/js/quixnav-init.js'); ?>"></script>

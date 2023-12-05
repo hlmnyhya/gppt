@@ -12,7 +12,7 @@ class Berkas extends CI_Controller {
         $data['detaillayanan'] = $this->M_DetailLayanan->show_data();
         $this->load->view('admin/permohonan/partials/header',$data);
 		$this->load->view('templates/sidebar');
-		$this->load->view('admin/permohonan/tambah_permohonan',$data);
+		$this->load->view('admin/permohonan/permohonan',$data);
 		$this->load->view('admin/permohonan/partials/footer');
 
 	}
@@ -68,5 +68,32 @@ public function remove_berkas()
         $this->output->set_content_type('application/json')->set_output(json_encode(array('error' => 'File not found')));
     }
 }
+
+public function delete_file() {
+        // Check if it's an AJAX request
+        if ($this->input->is_ajax_request()) {
+            $id_permohonan = $this->input->post('id_permohonan');
+            $fileId = $this->input->post('fileId');
+
+            // Perform the file deletion in the model
+            $deleteResult = $this->M_syarat->deleteFile($id_permohonan, $fileId);
+
+            // Prepare the JSON response
+            $response = array('success' => $deleteResult);
+
+            // Send the JSON response
+            $this->output->set_content_type('application/json');
+            $this->output->set_output(json_encode($response));
+        } else {
+            show_404(); // Return a 404 response if it's not an AJAX request
+        }
+    }
+
+    public function delete_berkas($id_berkas)
+    {
+        $where = array('id_berkas' => $id_berkas);
+        $this->M_gallery->delete_data($where, 'berkas');
+        redirect('admin/permohonan');
+    }
 
 }

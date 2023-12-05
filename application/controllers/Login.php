@@ -115,26 +115,28 @@ if ($_FILES['gambar_user']['name']) {
     $data['gambar_user'] = './uploads/users/users.png';
 }
 
+// Call insert_data and store the result
 $inserted = $this->M_users->insert_data($data, 'users');
 
+// Check the result
+if ($inserted) {
+    $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Registrasi berhasil!</strong> Akun Anda telah dibuat. Silakan login.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>');
+    redirect('auth/login');
+} else {
+    $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Gagal menambahkan data.</strong> Silakan coba lagi nanti.
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>   
+    </div>');
+    redirect('auth/register');
+}
 
-        if ($inserted) {
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                    <strong>Registrasi berhasil!</strong> Akun Anda telah dibuat. Silakan login.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>');
-            redirect('auth/login');
-        } else {
-            $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    <strong>Gagal menambahkan data.</strong> Silakan coba lagi nanti.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>');
-            redirect('auth/register');
-        }
     }
 }
 

@@ -41,6 +41,7 @@
                                         <th>Pemohon</th>
                                         <th>Nama Layanan</th>
                                         <th>Jenis Layanan</th>
+                                        <th>Syarat Layanan</th>
                                         <th class="text-center">Status Permohonan</th>
                                         <th class="text-center">Status Antrian</th>
                                         <th>Berkas</th>
@@ -55,6 +56,7 @@
                                             <td><?= $user->nama; ?></td>
                                             <td><?= $user->nama_layanan; ?></td>
                                             <td><?= $user->nama_layanan_detail; ?></td>
+                                            <td><?php echo nl2br(implode(explode('<br>', $user->syarat))); ?></td>
                                             <td>
                                                 <center>
                                             <?php
@@ -91,26 +93,37 @@
                                             ?>
                                             </center>
                                             </td>
-                                            <td>
-                                                <?php
-                                                    $id_permohonan = $user->id_permohonan;
-                                                    // Tambahkan kondisi untuk mengecek apakah ada data berkas berdasarkan id_permohonan
-                                                    $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
-                                                                                        
-                                                    if ($hasBerkas) {
-                                                        // Jika ada data berkas, tampilkan tombol "Lihat Berkas"
-                                                        echo '<a type="button" href="'.base_url('admin/permohonan/detail_berkas/'.$id_permohonan).'" class="btn btn-info"><i class="mdi mdi-eye"></i> <span>Lihat Berkas</span></a>';
-                                                    }
-                                                
-                                                    // Tambahkan kondisi untuk mengecek apakah data berkas kosong
-                                                    $isBerkasEmpty = !$hasBerkas;
-                                                
-                                                    if ($isBerkasEmpty) {
-                                                        // Jika data berkas kosong, tampilkan tombol "Tambah Data"
-                                                        echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUploadBerkas"><i class="mdi mdi-plus"></i> <span>Tambah Data</span></button>';
-                                                    }
-                                                ?>
-                                            </td>
+                                    <td>
+    <?php
+    $id_permohonan = $user->id_permohonan;
+    $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
+
+    echo '<div class="form-group">';
+    echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '" required>';
+
+    // Retrieve existing files and display them
+    $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
+
+    if ($existingFiles) {
+        $filesCount = count($existingFiles);
+
+        echo '<div class="row mb-3">';
+
+        // Display files in a single column
+        for ($fileIndex = 0; $fileIndex < $filesCount; $fileIndex++) {
+            $file = $existingFiles[$fileIndex];
+            echo '<div class="col-md-12">';
+            echo '<div class="d-flex justify-content-between align-items-center">';
+            echo '<a href="' . base_url('uploads/berkas/' . $file->file) . '" target="_blank">' . $file->file . '</a>';
+            echo '<a class="btn btn-sm btn-danger" href="' . base_url('PETUGAS/Berkas/delete_berkas/' . $file->id_berkas) . '"><i class="mdi mdi-delete"></i></a>';
+            echo '</div>';
+            echo '</div>';
+        }
+
+        echo '</div>';
+    }
+    ?>
+</td>
                                             <td>
                                                 <!-- <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdatePermohonan" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
                                                 <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a> -->

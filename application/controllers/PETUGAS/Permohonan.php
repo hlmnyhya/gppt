@@ -124,12 +124,24 @@ WHERE
         </div>');
     }
 
-    redirect('petugaspetugaspetugas/permohonan');
+    redirect('petugas/permohonan');
 }
 
-public function update_data_aksi()
+// Function to get the last used nomor_antrian for a specific id_instansi
+private function get_last_nomor_antrian($id_instansi)
 {
-    $id_permohonan = $this->input->post('id_permohonan');
+    $last_nomor_antrian = $this->db->select('nomor_antrian')->where('id_instansi', $id_instansi)->get('antrian')->row();
+    return $last_nomor_antrian ? $last_nomor_antrian->last_nomor_antrian : 0;
+}
+
+// Function to update the last used nomor_antrian for a specific id_instansi
+private function update_last_nomor_antrian($id_instansi, $nomor_antrian)
+{
+    $this->db->where('id_instansi', $id_instansi)->update('antrian', array('nomor_antrian' => $nomor_antrian));
+}
+
+public function update_data_aksi($id_permohonan)
+{
     $nama = $this->input->post('nama');
     $id_instansi = $this->input->post('id_instansi');
     $id_layanan = $this->input->post('id_layanan');
@@ -137,20 +149,21 @@ public function update_data_aksi()
     $status_permohonan = $this->input->post('status_permohonan');
     $alasan = $this->input->post('alasan');
 
-    // Update data ke tabel 'permohonan'
+    // Update data in 'permohonan' table
     $data_permohonan = array(
         'nama' => $nama,
         'id_instansi' => $id_instansi,
         'id_layanan' => $id_layanan,
         'id_layanan_detail' => $id_layanan_detail,
         'status_permohonan' => $status_permohonan,
-        'alasan' => '',
+        'alasan' => $alasan,
     );
 
     $this->db->where('id_permohonan', $id_permohonan);
     $updated_permohonan = $this->db->update('permohonan', $data_permohonan);
 
     if ($updated_permohonan) {
+        // Update successful, redirect or set flash messages accordingly
         $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Data berhasil diperbarui!</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -158,6 +171,7 @@ public function update_data_aksi()
             </button>
         </div>');
     } else {
+        // Update failed, redirect or set flash messages accordingly
         $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Gagal memperbarui data.</strong> Silakan coba lagi nanti.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -166,15 +180,10 @@ public function update_data_aksi()
         </div>');
     }
 
-    redirect('petugaspetugas/permohonan');
+    redirect('petugas/permohonan');
 }
 
-    public function delete_data_aksi($id_permohonan)
-    {
-        $where = array('id_permohonan' => $id_permohonan);
-        $this->M_permohonan->delete_data($where, 'permohonan');
-        redirect('petugas/permohonan');
-    }
+
 public function proses_permohonan($id_permohonan)
 {
     // Pastikan $id_permohonan valid
@@ -212,7 +221,7 @@ public function tolak_permohonan()
     // Pastikan $id_permohonan valid
     if (!$id_permohonan) {
         // Handle kesalahan, misalnya redirect ke halaman sebelumnya atau tampilkan pesan error
-        redirect('admin/permohonan');
+        redirect('petugas/permohonan');
     }
 
     // Update status_permohonan ke "Ditolak"
@@ -281,7 +290,19 @@ public function selesai_permohonan()
     redirect('petugas/permohonan');
 }
 
+public function delete_data_aksi($id_permohonan)
+{
+    $where = array('id_permohonan' => $id_permohonan);
 
+    // Hapus data di tabel 'permohonan'
+    $this->M_permohonan->delete_data($where, 'permohonan');
+
+    // Hapus data di tabel 'antrian' berdasarkan id_permohonan
+    $where_antrian = array('id_permohonan' => $id_permohonan);
+    $this->M_antrian->delete_data($where_antrian, 'antrian');
+
+    redirect('petugas/permohonan');
+}
 
 }
 

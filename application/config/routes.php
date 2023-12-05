@@ -73,6 +73,7 @@ $route['admin/instansi'] = 'ADMIN/Instansi/index';
 $route['admin/layanan'] = 'ADMIN/Layanan/index';
 $route['admin/layanan_detail'] = 'ADMIN/DetailLayanan/index';
 $route['admin/berita'] = 'ADMIN/Berita/index';
+$route['admin/komentar'] = 'ADMIN/Komentar/index';
 $route['admin/syarat'] = 'ADMIN/Syarat/index';
 $route['admin/galeri'] = 'ADMIN/Gallery/index';
 $route['admin/users'] = 'ADMIN/Users/index';
@@ -81,6 +82,10 @@ $route['admin/permohonan'] = 'ADMIN/Permohonan/index';
 $route['admin/instansi/tambah'] = 'ADMIN/Instansi/tambah_data_aksi';
 $route['admin/instansi/ubah'] = 'ADMIN/Instansi/update_data_aksi';
 $route['admin/instansi/delete/(:num)'] = 'ADMIN/Instansi/delete_data_aksi/$1';
+
+$route['admin/komentar/tambah'] = 'ADMIN/Komentar/tambah_data_aksi';
+$route['admin/komentar/ubah'] = 'ADMIN/Komentar/update_data_aksi';
+$route['admin/komentar/delete/(:num)'] = 'ADMIN/Komentar/delete_data_aksi/$1';
 
 $route['admin/layanan/tambah'] = 'ADMIN/Layanan/tambah_data_aksi';
 $route['admin/layanan/ubah'] = 'ADMIN/Layanan/update_data_aksi';
@@ -138,6 +143,10 @@ $route['petugas/instansi/tambah'] = 'PETUGAS/Instansi/tambah_data_aksi';
 $route['petugas/instansi/ubah'] = 'PETUGAS/Instansi/update_data_aksi';
 $route['petugas/instansi/delete/(:num)'] = 'PETUGAS/Instansi/delete_data_aksi/$1';
 
+$route['petugas/komentar/tambah'] = 'PETUGAS/Komentar/tambah_data_aksi';
+$route['petugas/komentar/ubah'] = 'PETUGAS/Komentar/update_data_aksi';
+$route['petugas/komentar/delete/(:num)'] = 'PETUGAS/Komentar/delete_data_aksi/$1';
+
 $route['petugas/layanan/tambah'] = 'PETUGAS/Layanan/tambah_data_aksi';
 $route['petugas/layanan/ubah'] = 'PETUGAS/Layanan/update_data_aksi';
 $route['petugas/layanan/delete/(:num)'] = 'PETUGAS/Layanan/delete_data_aksi/$1';
@@ -181,6 +190,8 @@ $route['petugas/permohonan/detail_berkas/(:any)'] = 'PETUGAS/Permohonan/detail_b
 
 // Start USER ROUTE
 $route['user/permohonan/tambah'] = 'USER/Permohonan/tambah_data_aksi';
+$route['user/komentar/tambah'] = 'USER/Komentar/tambah_data_aksi';
+$route['user/komentar'] = 'USER/Komentar/index';
 
 $route['user/dashboard'] = 'USER/Dashboard/index';
 $route['user/permohonan'] = 'USER/Permohonan/index';

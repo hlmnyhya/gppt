@@ -69,4 +69,10 @@ public function remove_berkas()
     }
 }
 
+    public function delete_berkas($id_berkas)
+    {
+        $where = array('id_berkas' => $id_berkas);
+        $this->M_gallery->delete_data($where, 'berkas');
+        redirect('admin/permohonan');
+    }
 }

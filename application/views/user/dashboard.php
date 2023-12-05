@@ -59,8 +59,6 @@ foreach ($permohonan_data as $permohonan) : ?>
             </div>
         </div>
             <!-- /# column -->
-            
-            
         </div>
 </div>
 </div>

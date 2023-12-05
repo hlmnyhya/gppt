@@ -41,6 +41,7 @@ Content body start
                                         <th>Pemohon</th>
                                         <th>Nama Layanan</th>
                                         <th>Jenis Layanan</th>
+                                        <th>Syarat Layanan</th>
                                         <th class="text-center">Status Permohonan</th>
                                         <th>Berkas</th>
                                         <th>Aksi</th>
@@ -59,6 +60,7 @@ Content body start
                 <td><?= $user->permohonan_nama; ?></td>
                 <td><?= $user->nama_layanan; ?></td>
                 <td><?= $user->nama_layanan_detail; ?></td>
+                <td><?php echo nl2br(implode(explode('<br>', $user->syarat))); ?></td>
                 <td>
                     <center>
                         <?php
@@ -80,29 +82,51 @@ Content body start
                     </center>
                 </td>
                 <td>
-                    <?php
-                        $id_permohonan = $user->id_permohonan;
-                        // Tambahkan kondisi untuk mengecek apakah ada data berkas berdasarkan id_permohonan
-                        $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
-                        
-                        if ($hasBerkas) {
-                            // Jika ada data berkas, tampilkan tombol "Lihat Berkas"
-                            echo '<a type="button" href="'.base_url('user/permohonan/detail_berkas/'.$id_permohonan).'" class="btn btn-info"><i class="mdi mdi-eye"></i> <span>Lihat Berkas</span></a>';
-                        }
-                        
-                        // Tambahkan kondisi untuk mengecek apakah data berkas kosong
-                        $isBerkasEmpty = !$hasBerkas;
-                        
-                        if ($isBerkasEmpty) {
-                            // Jika data berkas kosong, tampilkan tombol "Tambah Data"
-                            echo '<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalUploadBerkas"><i class="mdi mdi-plus"></i> <span>Tambah Data</span></button>';
-                        }
-                        ?>
-                </td>
+                                            <?php
+                                            $id_permohonan = $user->id_permohonan;
+    $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
+
+    echo '<div class="form-group">';
+    echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '" required>';
+
+    // Retrieve existing files and display them
+    $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
+
+    if ($existingFiles) {
+        $filesCount = count($existingFiles);
+
+        echo '<div class="row mb-3">';
+
+        // Display files in a single column
+        for ($fileIndex = 0; $fileIndex < $filesCount; $fileIndex++) {
+            $file = $existingFiles[$fileIndex];
+            echo '<div class="col-md-12">';
+            echo '<div class="d-flex justify-content-between align-items-center">';
+            echo '<a href="' . base_url('uploads/berkas/' . $file->file) . '" target="_blank">' . $file->file . '</a>';
+            echo '<a class="btn btn-sm btn-danger" href="' . base_url('PETUGAS/Berkas/delete_berkas/' . $file->id_berkas) . '"><i class="mdi mdi-delete"></i></a>';
+            echo '</div>';
+            echo '</div>';
+        }
+
+        echo '</div>';
+    }
+                                        
+                                            echo '<div id="demo-upload" class="dropzone needsclick">';
+                                            echo '<div class="dz-message needsclick">';
+                                            echo 'Klik atau Tarik File Kesini.';
+                                            echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                        
+                                            echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
+                                            echo '</div>';
+                                            ?>
+                                        </td>
                 <td>
-                    <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateBerita" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
-                    <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a>
-                    <!-- <a type="button" href="<?php echo base_url('anggota/detail/'.$user->id_instansi); ?>" class="btn btn-primary"><i class="mdi mdi-eye"></i> <span>Detail</span></a> -->
+                    <a type="button" class="btn btn-info btn-ubah" data-toggle="modal" data-target="#modalKomentar" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-bell"></i> <span>Berikan Ulasan</span></a>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahSyarat">Tambah Data<span class="btn-icon-right"><i class="fa fa-plus"></i></span></button>    
+                <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateBerita" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
+                <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a>
                 </td>
             </tr>
             <?php endif; ?>
@@ -119,6 +143,70 @@ Content body start
 <!--**********************************
 Content body end
 ***********************************-->
+<!-- Modal Tambah Berita -->
+<div class="modal fade" id="modalKomentar" tabindex="-1" role="dialog" aria-labelledby="modalTambahBeritaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTambahBeritaLabel">Tambah Data Komentar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form Tambah Berita -->
+                <form id="formTambahKomentar" action="<?= base_url('user/komentar/tambah')?>" method="POST">
+    <div class="form-group">
+        <label for="id_user">Nama</label>
+        <input type="hidden" name="id_user" value="<?= $this->session->userdata('id_user')?>">
+        <input type="text" class="form-control" id="layanan" name="nama_layanan" value="<?= $this->session->userdata('nama')?>" placeholder="Nama Layanan" readonly required>
+    </div>
+        <input type="hidden" name="id_instansi" value="<?= $user->id_instansi?>">
+        <input type="hidden" name="id_layanan" value="<?= $user->permohonan_id_layanan?>">
+    <div class="form-group">
+        <label for="komentar">Komentar</label>
+        <textarea class="form-control" id="komentar" name="komentar" placeholder="Isi Komentar" required></textarea>
+    </div>
+    <center>
+    <div class="wrapper mb-3">
+        <input type="radio" name="rate" id="star-1" value="1">
+        <input type="radio" name="rate" id="star-2" value="2">
+        <input type="radio" name="rate" id="star-3" value="3">
+        <input type="radio" name="rate" id="star-4" value="4">
+        <input type="radio" name="rate" id="star-5" value="5">
+        <div class="content">
+            <div class="outer">
+                <div class="emojis">
+                    <li class="slideImg" data-value="1"><img src="<?= base_url();?>assets/emojis/emoji-1.png" alt=""></li>
+                    <li data-value="2"><img src="<?= base_url();?>assets/emojis/emoji-2.png" alt=""></li>
+                    <li data-value="3"><img src="<?= base_url();?>assets/emojis/emoji-3.png" alt=""></li>
+                    <li data-value="4"><img src="<?= base_url();?>assets/emojis/emoji-4.png" alt=""></li>
+                    <li data-value="5"><img src="<?= base_url();?>assets/emojis/emoji-5.png" alt=""></li>
+                </div>
+            </div>
+            <div class="stars">
+                <label for="star-1" class="star-1 fa fa-star"></label>
+                <label for="star-2" class="star-2 fa fa-star"></label>
+                <label for="star-3" class="star-3 fa fa-star"></label>
+                <label for="star-4" class="star-4 fa fa-star"></label>
+                <label for="star-5" class="star-5 fa fa-star"></label>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="text"></span>
+            <span class="numb"></span>
+        </div>
+    </div>
+    </center>
+    <button type="submit" class="btn btn-success text-white mt-3">Simpan</button>
+</form>
+
+                <!-- Akhir Form Tambah Berita -->
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <!-- Modal Tambah Data Permohonan -->
 <div class="modal fade" id="modalTambahPermohonan" tabindex="-1" role="dialog" aria-labelledby="modalTambahPermohonanLabel" aria-hidden="true">
@@ -224,6 +312,87 @@ Content body end
     </div>
 </div>
 
+     <!-- Modal Tambah Berita -->
+<div class="modal fade" id="modalTambahSyarat" tabindex="-1" role="dialog" aria-labelledby="modalTambahBeritaLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalTambahBeritaLabel">Tambah Data Komentar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Form Tambah Berita -->
+                <form id="formTambahKomentar" action="<?= base_url('petugas/komentar/tambah')?>" method="POST">
+    <div class="form-group">
+        <label for="id_user">Nama</label>
+        <input type="hidden" name="id_user" value="<?= $this->session->userdata('id_user')?>">
+        <input type="text" class="form-control" id="layanan" name="nama_layanan" value="<?= $this->session->userdata('nama')?>" placeholder="Nama Layanan" readonly required>
+    </div>
+     <div class="form-group">
+                    <label for="id_instansi">Instansi</label>
+                    <select class="form-control" id="id_instansi" name="id_instansi" required>
+                        <option value="">Pilih Instansi</option>
+                        <?php foreach ($instansi as $row): ?>
+                            <option value="<?= $row->id_instansi; ?>"><?= $row->nama_instansi; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    </div> 
+    <div class="form-group">
+        <label for="id_layanan">Layanan</label>
+        <select class="form-control" id="id_layanan" name="id_layanan" required>
+            <option value="">Pilih Layanan</option>
+            <?php foreach ($layanan as $layanan): ?>
+                <option value="<?= $layanan->id_layanan; ?>"><?= $layanan->nama_layanan; ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="komentar">Komentar</label>
+        <textarea class="form-control" id="komentar" name="komentar" placeholder="Isi Komentar" required></textarea>
+    </div>
+    <center>
+    <div class="wrapper mb-3">
+        <input type="radio" name="rate" id="star-1" value="1">
+        <input type="radio" name="rate" id="star-2" value="2">
+        <input type="radio" name="rate" id="star-3" value="3">
+        <input type="radio" name="rate" id="star-4" value="4">
+        <input type="radio" name="rate" id="star-5" value="5">
+        <div class="content">
+            <div class="outer">
+                <div class="emojis">
+                    <li class="slideImg" data-value="1"><img src="<?= base_url();?>assets/emojis/emoji-1.png" alt=""></li>
+                    <li data-value="2"><img src="<?= base_url();?>assets/emojis/emoji-2.png" alt=""></li>
+                    <li data-value="3"><img src="<?= base_url();?>assets/emojis/emoji-3.png" alt=""></li>
+                    <li data-value="4"><img src="<?= base_url();?>assets/emojis/emoji-4.png" alt=""></li>
+                    <li data-value="5"><img src="<?= base_url();?>assets/emojis/emoji-5.png" alt=""></li>
+                </div>
+            </div>
+            <div class="stars">
+                <label for="star-1" class="star-1 fa fa-star"></label>
+                <label for="star-2" class="star-2 fa fa-star"></label>
+                <label for="star-3" class="star-3 fa fa-star"></label>
+                <label for="star-4" class="star-4 fa fa-star"></label>
+                <label for="star-5" class="star-5 fa fa-star"></label>
+            </div>
+        </div>
+        <div class="footer">
+            <span class="text"></span>
+            <span class="numb"></span>
+        </div>
+    </div>
+    </center>
+    <button type="submit" class="btn btn-success text-white mt-3">Simpan</button>
+</form>
+
+                <!-- Akhir Form Tambah Berita -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <!-- Include jQuery -->
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
 
@@ -236,38 +405,69 @@ Content body end
 <!-- Your custom scripts, including Dropzone initialization -->
 <script>
     Dropzone.autoDiscover = false;
-    
+
     var file_upload = new Dropzone('#demo-upload', {
+        // Dropzone configuration options
         url: "<?= base_url('USER/Berkas/proses_upload'); ?>",
         method: "post",
         paramName: "userFile",
         addRemoveLinks: true,
+        autoProcessQueue: false, // Disable auto-upload
     });
-    
+
     file_upload.on('sending', function (a, b, c) {
         a.token = Math.random();
         c.append('token', a.token);
-        
+
         // Append id_permohonan to the form data
         var id_permohonan = document.getElementById('id_permohonan').value;
         c.append('id_permohonan', id_permohonan);
-        
+
         console.log(file_upload);
     });
-    
+
     file_upload.on('removedfile', function (a) {
-        var token = a.token;
+        // Code to remove file from the server
+    });
+
+    // Event listener for the trigger button
+    document.getElementById('uploadTrigger').addEventListener('click', function () {
+        // Process and upload files
+        file_upload.processQueue();
+    });
+</script>
+<script>
+    // Your existing Dropzone initialization script
+
+    // Event listener for the trigger button
+    document.getElementById('uploadTrigger').addEventListener('click', function () {
+        // Process and upload files
+        file_upload.processQueue();
+    });
+
+    // Retrieve existing files from the server and display them in Dropzone
+    Dropzone.on('init', function () {
+        var id_permohonan = document.getElementById('id_permohonan').value;
+
+        // Ajax request to fetch existing files for the specific id_permohonan
         $.ajax({
+            url: "<?= base_url('USER/Berkas/get_existing_files'); ?>",
             type: "post",
-            data: { token: token },
-            url: "<?= base_url('USER/Berkas/remove_berkas'); ?>",
-            cache: false,
+            data: { id_permohonan: id_permohonan },
             dataType: "json",
-            success: function () {
-                console.log('file berhasil dihapus');
+            success: function (response) {
+                if (response.success) {
+                    // Display existing files in Dropzone
+                    response.files.forEach(function (file) {
+                        var mockFile = { name: file.nama_file, size: file.ukuran_file };
+                        file_upload.emit('addedfile', mockFile);
+                        file_upload.emit('thumbnail', mockFile, file.thumbnail_url);
+                        file_upload.emit('complete', mockFile);
+                    });
+                }
             },
             error: function () {
-                console.log('gagal dihapus');
+                console.log('Failed to fetch existing files.');
             }
         });
     });
