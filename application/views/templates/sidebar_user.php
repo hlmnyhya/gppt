@@ -56,10 +56,10 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- Tautan Profile -->
-                                <a href="./app-profile.html" class="dropdown-item">
+                                <!-- <a href="./app-profile.html" class="dropdown-item">
                                     <i class="icon-user"></i>
                                     <span class="ml-2">Profile</span>
-                                </a>
+                                </a> -->
                                 <!-- Tautan Logout -->
                                 <a href="<?= base_url('auth/logout')?>" class="dropdown-item">
                                     <i class="icon-key"></i>

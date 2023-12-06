@@ -44,6 +44,7 @@
                                         </thead>
                                         <tbody>
                                             <?php $no=1; foreach ($layanan as $user): ?>
+                                                 <?php if ($user->id_instansi == $this->session->userdata('id_instansi')): ?>
                                                 <tr>
                                                     <td><?php echo $no++ ?></td>    
                                                     <td><?php echo $user->nama_instansi; ?></td>
@@ -56,6 +57,7 @@
                                                     </td>
                                                 </tr>
                                             </tbody>
+                                            <?php endif;?>
                                             <?php endforeach;?>
                                         </table>
                                     </div>

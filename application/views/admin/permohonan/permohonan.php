@@ -37,13 +37,11 @@
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>No Antrian</th>
                                         <th>Pemohon</th>
                                         <th>Nama Layanan</th>
                                         <th>Jenis Layanan</th>
                                         <th>Syarat Layanan</th>
                                         <th class="text-center">Status Permohonan</th>
-                                        <th class="text-center">Status Antrian</th>
                                         <th>Berkas</th>
                                         <th>Aksi</th>
                                     </tr>
@@ -52,7 +50,6 @@
                                     <?php $no=1; foreach ($permohonan as $user): ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $user->nomor_antrian; ?></td>
                                             <td><?= $user->nama; ?></td>
                                             <td><?= $user->nama_layanan; ?></td>
                                             <td><?= $user->nama_layanan_detail; ?></td>
@@ -73,22 +70,6 @@
                                                     echo '<a class="text-white badge badge-rounded badge-success">' . $status_permohonan . '</a>';
                                                 } else {
                                                     echo $status_permohonan; // Display the status as is for other cases
-                                                }
-                                            ?>
-                                            </center>
-                                            </td>
-                                            <td>
-                                                <center>
-                                            <?php
-                                                $status_antrian = $user->status_antrian;
-                                                if ($status_antrian == 'Menunggu') {
-                                                    echo '<a class="text-white badge badge-rounded badge-primary">' . $status_antrian . '</a>';
-                                                } elseif ($status_antrian == 'Proses') {
-                                                    echo '<a class="text-white badge badge-rounded badge-secondary">' . $status_antrian . '</a>';
-                                                } elseif ($status_antrian == 'Selesai') {
-                                                    echo '<a class="text-white badge badge-rounded badge-success">' . $status_antrian . '</a>';
-                                                } else {
-                                                    echo $status_antrian; // Display the status as is for other cases
                                                 }
                                             ?>
                                             </center>

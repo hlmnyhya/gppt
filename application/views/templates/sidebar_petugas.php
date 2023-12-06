@@ -56,10 +56,10 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right">
                                 <!-- Tautan Profile -->
-                                <a href="./app-profile.html" class="dropdown-item">
+                                <!-- <a href="./app-profile.html" class="dropdown-item">
                                     <i class="icon-user"></i>
                                     <span class="ml-2">Profile</span>
-                                </a>
+                                </a> -->
                                 <!-- Tautan Logout -->
                                 <a href="<?= base_url('auth/logout')?>" class="dropdown-item">
                                     <i class="icon-key"></i>
@@ -93,8 +93,8 @@
                             <!-- <li><a href="<?= base_url('admin/instansi')?>">Instansi</a></li> -->
                             <li><a href="<?= base_url('petugas/layanan')?>">Layanan</a></li>
                             <li><a href="<?= base_url('petugas/layanan_detail')?>">Detail Layanan</a></li>
-                            <li><a href="<?= base_url('admin/syarat')?>">Syarat</a></li>
-                            <li><a href="<?= base_url('admin/komentar')?>">Komentar</a></li>
+                            <li><a href="<?= base_url('petugas/syarat')?>">Syarat</a></li>
+                            <li><a href="<?= base_url('petugas/komentar')?>">Komentar</a></li>
                             <!-- <li><a href="<?= base_url('admin/berita')?>">Berita</a></li> -->
                             <!-- <li><a href="<?= base_url('admin/galeri')?>">Galeri</a></li> -->
                             <!-- <li><a href="<?= base_url('admin/users')?>">Users</a></li> -->

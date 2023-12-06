@@ -33,9 +33,9 @@ JOIN
 ')->result();
 }
 
-    public function insert_data($data, $table)
+     public function insert_data($table, $data)
     {
-       ($this->db->insert($table, $data));
+       return $this->db->insert($data, $table);
     }
 
     public function tampil_instansi()

@@ -31,9 +31,9 @@ class M_DetailLayanan extends CI_Model
         return $this->db->query("SELECT * FROM layanan")->result();
     }
 
-    public function insert_data($data, $table)
+     public function insert_data($table, $data)
     {
-       ($this->db->insert($table, $data));
+       return $this->db->insert($data, $table);
     }
 
     public function update_data($table, $data, $where)

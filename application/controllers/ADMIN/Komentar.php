@@ -32,23 +32,23 @@ public function tambah_data_aksi()
         'waktu_komentar' => date('Y-m-d H:i:s'), // Assuming you want to store the current timestamp
     );
 
-    $inserted = $this->M_komentar->insert_data($data, 'komentar');
+   $inserted = $this->db->insert('komentar', $data);
 
-    if ($inserted) {
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Data berhasil ditambahkan!</strong>
+if ($inserted) {
+    $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        <strong>Data berhasil ditambahkan!</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>');
+} else {
+    $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Data berhasil diperbarui!</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>');
-    } else {
-        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Gagal menambahkan data.</strong> Silakan coba lagi nanti.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>');
-    }
+}
 
     redirect('admin/komentar');
 }
@@ -73,23 +73,16 @@ public function update_data_aksi()
     );
 
     $where = array('id_komentar' => $id_komentar);
-    $updated = $this->M_komentar->update_data('komentar', $data, $where);
+    $updated = $this->db->update('komentar', $data, $where);
 
     if ($updated) {
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+        $this->session->set_flashdata('error', '<div class="alert alert-success alert-dismissible fade show" role="alert">
             <strong>Data berhasil diperbarui!</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>');
-    } else {
-        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Gagal memperbarui data.</strong> Silakan coba lagi nanti.
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>');
-    }
+    } 
 
     redirect('admin/komentar');
 }

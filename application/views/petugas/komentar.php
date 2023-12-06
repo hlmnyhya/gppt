@@ -14,12 +14,12 @@
 
         <div class="row">
             <div class="col-12">
-                <?php if ($this->session->flashdata('pesan')): ?>
+               <?php if ($this->session->flashdata('pesan')): ?>
                     <?= $this->session->flashdata('pesan'); ?>
                 <?php endif; ?>
                 <?php if ($this->session->flashdata('error')): ?>
                     <?= $this->session->flashdata('error'); ?>
-                <?php endif; ?>
+                    <?php endif; ?>
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Data Komentar</h4>
@@ -44,6 +44,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $no=1; foreach ($komentar as $user): ?>
+                                         <?php if ($user->id_instansi == $this->session->userdata('id_instansi')): ?>
                                         <tr>
                                             <td><?php echo $no++ ?></td>
                                             <td><?php echo $user->username; ?></td>
@@ -79,11 +80,12 @@
 
                                             <td><?php echo $user->waktu_komentar; ?></td>
                                             <td>
-                                                <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateSyarat" data-id="<?= $user->id_komentar ?>" data-nama="<?= $user->komentar ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
+                                                <!-- <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateSyarat" data-id="<?= $user->id_komentar ?>" data-nama="<?= $user->komentar ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a> -->
                                                 <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_komentar ?>" data-toggle="modal" data-target="#modalKonfirmasiHapus"><i class="mdi mdi-delete"></i> <span>Hapus</span></a>
                                                 <!-- <a type="button" href="<?php echo base_url('anggota/detail/'.$user->id_instansi); ?>" class="btn btn-primary"><i class="mdi mdi-eye"></i> <span>Detail</span></a> -->
                                             </td>
                                         </tr>
+                                    <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>
@@ -115,24 +117,6 @@
         <label for="id_user">Nama</label>
         <input type="hidden" name="id_user" value="<?= $this->session->userdata('id_user')?>">
         <input type="text" class="form-control" id="layanan" name="nama_layanan" value="<?= $this->session->userdata('nama')?>" placeholder="Nama Layanan" readonly required>
-    </div>
-     <div class="form-group">
-                    <label for="id_instansi">Instansi</label>
-                    <select class="form-control" id="id_instansi" name="id_instansi" required>
-                        <option value="">Pilih Instansi</option>
-                        <?php foreach ($instansi as $row): ?>
-                            <option value="<?= $row->id_instansi; ?>"><?= $row->nama_instansi; ?></option>
-                        <?php endforeach; ?>
-                    </select>
-                    </div> 
-    <div class="form-group">
-        <label for="id_layanan">Layanan</label>
-        <select class="form-control" id="id_layanan" name="id_layanan" required>
-            <option value="">Pilih Layanan</option>
-            <?php foreach ($layanan as $layanan): ?>
-                <option value="<?= $layanan->id_layanan; ?>"><?= $layanan->nama_layanan; ?></option>
-            <?php endforeach; ?>
-        </select>
     </div>
     <div class="form-group">
         <label for="komentar">Komentar</label>
@@ -195,6 +179,7 @@
     <div class="form-group">
         <label for="id_user">Nama</label>
         <input type="hidden" name="id_user" value="<?= $this->session->userdata('id_user')?>">
+        <input type="hidden" name="id_komentar" value="<?= $user->id_komentar?>">
         <input type="text" class="form-control" id="layanan" name="nama_layanan" value="<?= $this->session->userdata('nama')?>" placeholder="Nama Layanan" readonly required>
     </div>
      <div class="form-group">

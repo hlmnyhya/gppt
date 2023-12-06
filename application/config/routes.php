@@ -57,6 +57,7 @@ $route['translate_uri_dashes'] = FALSE;
 $route['detail_instansi/(:any)'] = 'Welcome/detail_instansi/$1';
 $route['detail_layanan/(:any)'] = 'Welcome/detail_layanan/$1';
 $route['detail_layanan_detail/(:any)'] = 'Welcome/detail_layanan_detail/$1';
+$route['antrian/masyarakat'] = 'Antrian/index';
 
 
 // Start AUTH ROUTE

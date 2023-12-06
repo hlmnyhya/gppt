@@ -5,88 +5,51 @@ class M_permohonan extends CI_Model
 {
     public function show_data()
     {
-    return $this->db->query("SELECT
-    a.id_antrian, 
-    a.id_user AS antrian_id_user,
-    a.id_layanan AS antrian_id_layanan,
-    a.nomor_antrian, 
-    a.status_antrian,
-    p.id_permohonan, 
-    p.nama, 
-    p.id_layanan, 
-    p.id_layanan_detail, 
-    p.status_permohonan, 
-    l.id_instansi, 
-    l.nama_layanan, 
-    l.deskripsi_layanan, 
-    l.gambar_layanan, 
-    ld.nama_layanan_detail, 
-    ld.deskripsi_layanan_detail, 
-    ld.gambar_layanan_detail,
-    s.id_syarat, 
-    s.id_layanan_detail AS syarat_id_layanan_detail, 
-    s.syarat
+    return $this->db->query("SELECT 
+    p.id_permohonan, p.id_user, p.nama, p.id_instansi, p.id_layanan, p.id_layanan_detail, p.status_permohonan, p.alasan,
+    u.id_user AS user_id, u.nik, u.nama AS user_nama, u.username, u.password, u.email, u.nomor_telepon, u.id_level, u.id_instansi AS user_instansi, u.gambar_user,
+    l.id_layanan, l.id_instansi AS layanan_instansi, l.nama_layanan, l.deskripsi_layanan, l.gambar_layanan,
+    ld.id_layanan_detail, ld.id_layanan AS layanan_detail_layanan, ld.nama_layanan_detail, ld.deskripsi_layanan_detail, ld.gambar_layanan_detail,
+    s.id_syarat, s.id_layanan_detail AS syarat_layanan_detail, s.syarat
 FROM 
-    permohonan AS p
+    permohonan p
 JOIN 
-    layanan AS l ON p.id_layanan = l.id_layanan
+    users u ON p.id_user = u.id_user
 JOIN 
-    layanan_detail AS ld ON p.id_layanan_detail = ld.id_layanan_detail
-JOIN
-    antrian AS a ON p.id_user = a.id_user
-JOIN
-    syarat AS s ON ld.id_layanan_detail = s.id_layanan_detail;")->result();
+    layanan l ON p.id_layanan = l.id_layanan AND p.id_instansi = l.id_instansi
+JOIN 
+    layanan_detail ld ON p.id_layanan_detail = ld.id_layanan_detail
+LEFT JOIN 
+    syarat s ON ld.id_layanan_detail = s.id_layanan_detail
+;")->result();
     }
 
     public function show_data_by_user()
     {         
     return $this->db->query("SELECT 
-    a.id_antrian, 
-    a.id_user AS antrian_id_user,
-    a.id_layanan AS antrian_id_layanan,
-    a.nomor_antrian, 
-    a.status_antrian,
-    p.id_permohonan, 
-    p.nama AS permohonan_nama, 
-    p.id_layanan AS permohonan_id_layanan, 
-    p.id_layanan_detail, 
-    p.status_permohonan, 
-    l.id_instansi, 
-    l.nama_layanan, 
-    l.deskripsi_layanan, 
-    l.gambar_layanan, 
-    ld.nama_layanan_detail, 
-    ld.deskripsi_layanan_detail, 
-    ld.gambar_layanan_detail,
-    u.id_user, 
-    u.nik, 
-    u.nama AS user_nama, 
-    u.username, 
-    u.password, 
-    u.email, 
-    u.nomor_telepon, 
-    u.id_level, 
-    u.gambar_user,
-    s.id_syarat,
-    s.syarat
+    p.id_permohonan, p.id_user, p.nama as permohonan_nama, p.id_instansi, p.id_layanan, p.id_layanan_detail, p.status_permohonan, p.alasan,
+    u.id_user AS user_id, u.nik, u.nama AS user_nama, u.username, u.password, u.email, u.nomor_telepon, u.id_level, u.id_instansi AS user_instansi, u.gambar_user,
+    l.id_layanan, l.id_instansi AS layanan_instansi, l.nama_layanan, l.deskripsi_layanan, l.gambar_layanan,
+    ld.id_layanan_detail, ld.id_layanan AS layanan_detail_layanan, ld.nama_layanan_detail, ld.deskripsi_layanan_detail, ld.gambar_layanan_detail,
+    s.id_syarat, s.id_layanan_detail AS syarat_layanan_detail, s.syarat
 FROM 
-    antrian AS a
-LEFT JOIN
-    permohonan AS p ON a.id_user = p.id_user
+    permohonan p
+JOIN 
+    users u ON p.id_user = u.id_user
+JOIN 
+    layanan l ON p.id_layanan = l.id_layanan AND p.id_instansi = l.id_instansi
+JOIN 
+    layanan_detail ld ON p.id_layanan_detail = ld.id_layanan_detail
 LEFT JOIN 
-    layanan AS l ON p.id_layanan = l.id_layanan
-LEFT JOIN 
-    layanan_detail AS ld ON p.id_layanan_detail = ld.id_layanan_detail
-LEFT JOIN
-    users AS u ON p.id_user = u.id_user
-LEFT JOIN
-    syarat AS s ON ld.id_layanan_detail = s.id_layanan_detail;
+    syarat s ON ld.id_layanan_detail = s.id_layanan_detail
+JOIN 
+    users u_detail ON u.id_user = u_detail.id_user
 ;")->result();
     }
 
-    public function insert_data($data, $table)
+     public function insert_data($table, $data)
     {
-       ($this->db->insert($table, $data));
+       return $this->db->insert($data, $table);
     }
 
     public function update_data($table, $data, $where)

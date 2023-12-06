@@ -37,7 +37,6 @@ Content body start
                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>No Antrian</th>
                                         <th>Pemohon</th>
                                         <th>Nama Layanan</th>
                                         <th>Jenis Layanan</th>
@@ -48,15 +47,14 @@ Content body start
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <?php $no=1; foreach ($permohonan as $user): ?>
-                                        <?php
-            // Dapatkan id_user dari sesi
-            $id_user_sesi = $this->session->userdata('id_user');
-            ?>
-        <?php if ($user->id_user == $id_user_sesi): ?>
-            <tr>
+                                <?php $no=1; foreach ($permohonan as $user): ?>
+    <?php
+        // Dapatkan id_user dari sesi
+        $id_user_sesi = $this->session->userdata('id_user');
+    ?>
+    <?php if ($user->id_user == $id_user_sesi): ?>
+        <tr>
                 <td><?= $no++ ?></td>
-                <td><?= $user->nomor_antrian; ?></td>
                 <td><?= $user->permohonan_nama; ?></td>
                 <td><?= $user->nama_layanan; ?></td>
                 <td><?= $user->nama_layanan_detail; ?></td>
@@ -122,15 +120,18 @@ Content body start
                                             echo '</div>';
                                             ?>
                                         </td>
-                <td>
-                    <a type="button" class="btn btn-info btn-ubah" data-toggle="modal" data-target="#modalKomentar" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-bell"></i> <span>Berikan Ulasan</span></a>
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahSyarat">Tambah Data<span class="btn-icon-right"><i class="fa fa-plus"></i></span></button>    
-                <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateBerita" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
-                <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a>
-                </td>
-            </tr>
-            <?php endif; ?>
-            <?php endforeach; ?>
+               <td>
+                <?php if ($user->status_permohonan == 'Selesai'): ?>
+                    <a type="button" class="btn btn-info btn-ulasan" data-toggle="modal" data-target="#modalKomentar" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-bell"></i> <span>Berikan Ulasan</span></a>
+                <?php endif; ?>
+                <?php if ($user->status_permohonan != 'Selesai'): ?>
+                    <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateBerita" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
+                    <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a>
+                <?php endif; ?>
+            </td>
+        </tr>
+    <?php endif; ?>
+<?php endforeach; ?>
         </tbody>
     </table>
 </div>
@@ -162,7 +163,7 @@ Content body end
         <input type="text" class="form-control" id="layanan" name="nama_layanan" value="<?= $this->session->userdata('nama')?>" placeholder="Nama Layanan" readonly required>
     </div>
         <input type="hidden" name="id_instansi" value="<?= $user->id_instansi?>">
-        <input type="hidden" name="id_layanan" value="<?= $user->permohonan_id_layanan?>">
+        <input type="hidden" name="id_layanan" value="<?= $user->layanan_instansi?>">
     <div class="form-group">
         <label for="komentar">Komentar</label>
         <textarea class="form-control" id="komentar" name="komentar" placeholder="Isi Komentar" required></textarea>

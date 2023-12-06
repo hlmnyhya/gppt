@@ -266,6 +266,7 @@ public function selesai_permohonan()
     // Update status_permohonan ke "Selesai"
     $data_permohonan = array(
         'status_permohonan' => 'Selesai',
+        'alasan' => $this->input->post('alasan'),
     );
 
     $this->db->where('id_permohonan', $id_permohonan);

@@ -15,9 +15,9 @@ class M_layanan extends CI_Model
         return $this->db->query("SELECT * FROM instansi")->result();
     }
 
-    public function insert_data($data, $table)
+     public function insert_data($table, $data)
     {
-       ($this->db->insert($table, $data));
+       return $this->db->insert($data, $table);
     }
 
     public function update_data($table, $data, $where)

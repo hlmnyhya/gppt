@@ -40,6 +40,7 @@
                                 </thead>
                                 <tbody>
                                     <?php $no=1; foreach ($syarat as $user): ?>
+                                        <?php if ($user->id_instansi == $this->session->userdata('id_instansi')): ?>
                                         <tr>
                                             <td><?php echo $no++ ?></td>
                                             <td><?php echo $user->nama_layanan_detail; ?></td>
@@ -50,6 +51,7 @@
                                                 <!-- <a type="button" href="<?php echo base_url('anggota/detail/'.$user->id_instansi); ?>" class="btn btn-primary"><i class="mdi mdi-eye"></i> <span>Detail</span></a> -->
                                             </td>
                                         </tr>
+                                    <?php endif; ?>
                                     <?php endforeach; ?>
                                 </tbody>
                             </table>

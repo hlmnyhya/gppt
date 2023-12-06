@@ -69,7 +69,6 @@ class Berita extends CI_Controller {
     redirect('admin/berita');
 }
 
-// Update Data Berita
 public function update_data_aksi()
 {
     $id_berita = $this->input->post('id_berita');
@@ -78,7 +77,7 @@ public function update_data_aksi()
     $waktu_publikasi = htmlspecialchars($this->input->post('waktu_publikasi'));
     $penulis = htmlspecialchars($this->input->post('penulis'));
 
-    // Menggunakan $_FILES untuk mendapatkan informasi upload file
+     // Menggunakan $_FILES untuk mendapatkan informasi upload file
     $gambar_berita = $_FILES['gambar_berita']['name'];
 
     // Konfigurasi upload gambar berita

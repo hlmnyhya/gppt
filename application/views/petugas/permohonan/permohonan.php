@@ -34,25 +34,27 @@
                     <div class="card-body">
                         <div class="table-responsive text-dark">
                             <table id="example" class="display" style="min-width: 845px">
-                                <thead>
+                                 <thead>
                                     <tr>
                                         <th>No</th>
-                                        <th>No Antrian</th>
                                         <th>Pemohon</th>
                                         <th>Nama Layanan</th>
                                         <th>Jenis Layanan</th>
                                         <th>Syarat Layanan</th>
                                         <th class="text-center">Status Permohonan</th>
-                                        <th class="text-center">Status Antrian</th>
                                         <th>Berkas</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $no=1; foreach ($permohonan as $user): ?>
+                                            <?php
+        // Dapatkan id_user dari sesi
+        $id_instansi = $this->session->userdata('id_instansi');
+    ?>
+    <?php if ($user->id_instansi == $id_instansi): ?>
                                         <tr>
                                             <td><?= $no++ ?></td>
-                                            <td><?= $user->nomor_antrian; ?></td>
                                             <td><?= $user->nama; ?></td>
                                             <td><?= $user->nama_layanan; ?></td>
                                             <td><?= $user->nama_layanan_detail; ?></td>
@@ -78,52 +80,41 @@
                                             </center>
                                             </td>
                                             <td>
-                                                <center>
                                             <?php
-                                                $status_antrian = $user->status_antrian;
-                                                if ($status_antrian == 'Menunggu') {
-                                                    echo '<a class="text-white badge badge-rounded badge-primary">' . $status_antrian . '</a>';
-                                                } elseif ($status_antrian == 'Proses') {
-                                                    echo '<a class="text-white badge badge-rounded badge-secondary">' . $status_antrian . '</a>';
-                                                } elseif ($status_antrian == 'Selesai') {
-                                                    echo '<a class="text-white badge badge-rounded badge-success">' . $status_antrian . '</a>';
-                                                } else {
-                                                    echo $status_antrian; // Display the status as is for other cases
+                                            $id_permohonan = $user->id_permohonan;
+                                            $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
+
+                                            echo '<div class="form-group">';
+                                            echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '"                                        required>';
+
+                                            // Retrieve existing files and display them
+                                            $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
+
+                                            if ($existingFiles) {
+                                                echo '<div class="row mb-3">';
+                                                foreach ($existingFiles as $file) {
+                                                    echo '<div class="col-md-6">';
+                                                    echo '<div class="d-flex justify-content-between align-items-center">';
+                                                    echo '<span>' . $file->file . '</span>';
+                                                    // Add a delete button for each file
+                                                    echo '<a class="btn btn-sm btn-danger" href="' . base_url('ADMIN/Berkas/delete_berkas/' . $file->id_berkas) . '"><i                                         class="mdi mdi-delete"></i></a>';
+                                                    echo '</div>';
+                                                    echo '</div>';
                                                 }
+                                                echo '</div>';
+                                            }
+                                        
+                                            echo '<div id="demo-upload" class="dropzone needsclick">';
+                                            echo '<div class="dz-message needsclick">';
+                                            echo 'Klik atau Tarik File Kesini.';
+                                            echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
+                                            echo '</div>';
+                                            echo '</div>';
+                                            
+                                            echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
+                                            echo '</div>';
                                             ?>
-                                            </center>
-                                            </td>
-                                    <td>
-    <?php
-    $id_permohonan = $user->id_permohonan;
-    $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
-
-    echo '<div class="form-group">';
-    echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '" required>';
-
-    // Retrieve existing files and display them
-    $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
-
-    if ($existingFiles) {
-        $filesCount = count($existingFiles);
-
-        echo '<div class="row mb-3">';
-
-        // Display files in a single column
-        for ($fileIndex = 0; $fileIndex < $filesCount; $fileIndex++) {
-            $file = $existingFiles[$fileIndex];
-            echo '<div class="col-md-12">';
-            echo '<div class="d-flex justify-content-between align-items-center">';
-            echo '<a href="' . base_url('uploads/berkas/' . $file->file) . '" target="_blank">' . $file->file . '</a>';
-            echo '<a class="btn btn-sm btn-danger" href="' . base_url('PETUGAS/Berkas/delete_berkas/' . $file->id_berkas) . '"><i class="mdi mdi-delete"></i></a>';
-            echo '</div>';
-            echo '</div>';
-        }
-
-        echo '</div>';
-    }
-    ?>
-</td>
+                                        </td>
                                             <td>
                                                 <!-- <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdatePermohonan" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
                                                 <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a> -->
@@ -134,7 +125,8 @@
                                                 <!-- <a type="button" href="<?php echo base_url('anggota/detail/'.$user->id_instansi); ?>" class="btn btn-primary"><i class="mdi mdi-eye"></i> <span>Detail</span></a> -->
                                             </td>
                                         </tr>
-                                    <?php endforeach; ?>
+                                        <?php endif; ?>
+                                        <?php endforeach; ?>
                                 </tbody>
                             </table>
                         </div>

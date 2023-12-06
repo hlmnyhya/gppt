@@ -6,24 +6,31 @@ class M_syarat extends CI_Model
    public function show_data()
 {
     return $this->db->query('
-        SELECT 
-            s.`id_syarat`,
-            ld.`id_layanan_detail`, 
-            s.`syarat`,
-            ld.`id_layanan`, 
-            ld.`nama_layanan_detail`, 
-            ld.`deskripsi_layanan_detail`, 
-            ld.`gambar_layanan_detail`
-        FROM 
-            `syarat` s
-        JOIN 
-            `layanan_detail` ld ON s.`id_layanan_detail` = ld.`id_layanan_detail`
+       SELECT 
+    s.`id_syarat`,
+    ld.`id_layanan_detail`, 
+    s.`syarat`,
+    ld.`id_layanan`, 
+    ld.`nama_layanan_detail`, 
+    ld.`deskripsi_layanan_detail`, 
+    ld.`gambar_layanan_detail`,
+    l.`id_layanan`, 
+    l.`id_instansi`, 
+    l.`nama_layanan`, 
+    l.`deskripsi_layanan`, 
+    l.`gambar_layanan`
+FROM 
+    `syarat` s
+JOIN 
+    `layanan_detail` ld ON s.`id_layanan_detail` = ld.`id_layanan_detail`
+JOIN
+    `layanan` l ON ld.`id_layanan` = l.`id_layanan`
     ')->result();
 }
 
-    public function insert_data($data, $table)
+     public function insert_data($table, $data)
     {
-       ($this->db->insert($table, $data));
+       return $this->db->insert($data, $table);
     }
 
     public function update_data($table, $data, $where)

@@ -8,9 +8,9 @@ class M_instansi extends CI_Model
         return $this->db->get('instansi')->result();
     }
 
-    public function insert_data($data, $table)
+     public function insert_data($table, $data)
     {
-       ($this->db->insert($table, $data));
+       return $this->db->insert($data, $table);
     }
 
     public function update_data($table, $data, $where)
@@ -27,5 +27,12 @@ class M_instansi extends CI_Model
     public function get_all_instansi()
     {
         return $this->db->get('instansi')->result();
+    }
+
+    public function get_instansi_by_id($id_instansi)
+    {
+        // Assuming you have a table named 'instansi'
+        $this->db->where('id_instansi', $id_instansi);
+        return $this->db->get('instansi')->row();
     }
 }

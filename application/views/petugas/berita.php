@@ -124,14 +124,14 @@
             <div class="modal-body">
                 <!-- Form Update Berita -->
                 <form id="formUpdateBerita" action="<?= base_url('admin/berita/ubah')?>" method="POST" enctype="multipart/form-data">
-                    <input type="hidden" name="id_berita" id="id_berita">
                     <div class="form-group">
                         <label for="judul_berita">Judul Berita</label>
-                        <input type="text" class="form-control" id="judul_berita" name="judul_berita" value="<?= $user->judul_berita; ?>" placeholder="Judul Berita" required>
+                        <input type="hidden" class="form-control" id="id_berita" name="id_berita" value="<?= $user->id_berita?>" placeholder="Judul Berita" required>
+                        <input type="text" class="form-control" id="judul_berita" name="judul_berita" value="<?= $user->judul_berita?>" placeholder="Judul Berita" required>
                     </div>
                     <div class="form-group">
                         <label for="isi_berita">Isi Berita</label>
-                        <textarea class="form-control" id="isi_berita" name="isi_berita"  value="<?= $user->isi_berita; ?>" placeholder="Isi Berita" required></textarea>
+                        <textarea class="form-control" id="isi_berita" name="isi_berita" placeholder="Isi Berita" required> <?= $user->isi_berita?> </textarea>
                     </div>
                     <div class="form-group">
                         <label for="waktu_publikasi">Tanggal</label>
@@ -139,13 +139,14 @@
                     </div>
                     <div class="form-group">
                         <label for="penulis">Penulis</label>
-                        <input type="text" class="form-control" id="penulis" name="penulis" placeholder="Penulis"  value="<?= $user->penulis    ; ?>" required>
+                        <input type="text" class="form-control" id="penulis" name="penulis" value="<?= $user->penulis?>" placeholder="Penulis" required>
                     </div>
                     <div class="form-group">
                         <label for="gambar_berita">Gambar Berita</label>
                         <input type="file" class="form-control" id="gambar_berita" name="gambar_berita" accept="image/*">
                     </div>
                     <button type="submit" class="btn btn-success text-white">Simpan</button>
+                </form>
                 </form>
                 <!-- Akhir Form Update Berita -->
             </div>
