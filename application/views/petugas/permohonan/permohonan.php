@@ -80,41 +80,44 @@
                                             </center>
                                             </td>
                                             <td>
-                                            <?php
-                                            $id_permohonan = $user->id_permohonan;
-                                            $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
+    <?php
+    $id_permohonan = $user->id_permohonan;
+    $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
 
-                                            echo '<div class="form-group">';
-                                            echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '"                                        required>';
+    echo '<div class="form-group">';
+    echo '<input type="hidden" class="form-control" id="id_permohonan" name="id_permohonan" value="' . $user->id_permohonan . '" required>';
 
-                                            // Retrieve existing files and display them
-                                            $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
+    // Retrieve existing files and display them
+    $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
 
-                                            if ($existingFiles) {
-                                                echo '<div class="row mb-3">';
-                                                foreach ($existingFiles as $file) {
-                                                    echo '<div class="col-md-6">';
-                                                    echo '<div class="d-flex justify-content-between align-items-center">';
-                                                    echo '<span>' . $file->file . '</span>';
-                                                    // Add a delete button for each file
-                                                    echo '<a class="btn btn-sm btn-danger" href="' . base_url('ADMIN/Berkas/delete_berkas/' . $file->id_berkas) . '"><i                                         class="mdi mdi-delete"></i></a>';
-                                                    echo '</div>';
-                                                    echo '</div>';
-                                                }
-                                                echo '</div>';
-                                            }
-                                        
-                                            echo '<div id="demo-upload" class="dropzone needsclick">';
-                                            echo '<div class="dz-message needsclick">';
-                                            echo 'Klik atau Tarik File Kesini.';
-                                            echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
-                                            echo '</div>';
-                                            echo '</div>';
-                                            
-                                            echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
-                                            echo '</div>';
-                                            ?>
-                                        </td>
+    if ($existingFiles) {
+        echo '<div class="row mb-3">';
+        foreach ($existingFiles as $file) {
+            echo '<div class="col-md-6">';
+            echo '<div class="d-flex justify-content-between align-items-center">';
+            // Truncate the file name if it's too long
+            $truncatedFileName = (strlen($file->file) > 20) ? substr($file->file, 0, 20) . '...' : $file->file;
+            echo '<span title="' . $file->file . '">' . $truncatedFileName . '</span>';
+            // Add a delete button for each file
+            echo '<a class="btn btn-sm btn-danger" href="' . base_url('ADMIN/Berkas/delete_berkas/' . $file->id_berkas) . '"><i class="mdi mdi-delete"></i></a>';
+            echo '</div>';
+            echo '</div>';
+        }
+        echo '</div>';
+    }
+
+    echo '<div id="demo-upload" class="dropzone needsclick">';
+    echo '<div class="dz-message needsclick">';
+    echo 'Klik atau Tarik File Kesini.';
+    echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
+    echo '</div>';
+    echo '</div>';
+
+    echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
+    echo '</div>';
+    ?>
+</td>
+
                                             <td>
                                                 <!-- <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdatePermohonan" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->nama ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
                                                 <a href="#" class="btn btn-danger btn-hapus" data-id="<?= $user->id_permohonan ?>"><i class="mdi mdi-delete"></i> <span>Hapus</span></a> -->
@@ -447,7 +450,7 @@
             // Menangani aksi penghapusan setelah konfirmasi
             $('.btn-hapus-confirm').on('click', function () {
                 // Kirim permintaan penghapusan ke server
-                window.location.href = '<?= base_url('admin/syarat/delete/') ?>' + idPermohonan;
+                window.location.href = '<?= base_url('petugas/permohonan/delete/') ?>' + idPermohonan;
             });
         });
     });

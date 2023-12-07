@@ -80,8 +80,8 @@ Content body start
                     </center>
                 </td>
                 <td>
-                                            <?php
-                                            $id_permohonan = $user->id_permohonan;
+    <?php
+    $id_permohonan = $user->id_permohonan;
     $hasBerkas = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->num_rows() > 0;
 
     echo '<div class="form-group">';
@@ -91,35 +91,33 @@ Content body start
     $existingFiles = $this->db->where('id_permohonan', $id_permohonan)->get('berkas')->result();
 
     if ($existingFiles) {
-        $filesCount = count($existingFiles);
-
         echo '<div class="row mb-3">';
-
-        // Display files in a single column
-        for ($fileIndex = 0; $fileIndex < $filesCount; $fileIndex++) {
-            $file = $existingFiles[$fileIndex];
-            echo '<div class="col-md-12">';
+        foreach ($existingFiles as $file) {
+            echo '<div class="col-md-6">';
             echo '<div class="d-flex justify-content-between align-items-center">';
-            echo '<a href="' . base_url('uploads/berkas/' . $file->file) . '" target="_blank">' . $file->file . '</a>';
-            echo '<a class="btn btn-sm btn-danger" href="' . base_url('PETUGAS/Berkas/delete_berkas/' . $file->id_berkas) . '"><i class="mdi mdi-delete"></i></a>';
+            // Truncate the file name if it's too long
+            $truncatedFileName = (strlen($file->file) > 20) ? substr($file->file, 0, 20) . '...' : $file->file;
+            echo '<span title="' . $file->file . '">' . $truncatedFileName . '</span>';
+            // Add a delete button for each file
+            echo '<a class="btn btn-sm btn-danger" href="' . base_url('ADMIN/Berkas/delete_berkas/' . $file->id_berkas) . '"><i class="mdi mdi-delete"></i></a>';
             echo '</div>';
             echo '</div>';
         }
-
         echo '</div>';
     }
-                                        
-                                            echo '<div id="demo-upload" class="dropzone needsclick">';
-                                            echo '<div class="dz-message needsclick">';
-                                            echo 'Klik atau Tarik File Kesini.';
-                                            echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
-                                            echo '</div>';
-                                            echo '</div>';
-                                        
-                                            echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
-                                            echo '</div>';
-                                            ?>
-                                        </td>
+
+    echo '<div id="demo-upload" class="dropzone needsclick">';
+    echo '<div class="dz-message needsclick">';
+    echo 'Klik atau Tarik File Kesini.';
+    echo '<span class="note needsclick">atau pilih file dari komputer anda</span>';
+    echo '</div>';
+    echo '</div>';
+
+    echo '<center><button type="button" class="mt-3 btn btn-success" id="uploadTrigger">Upload Files</button></center>';
+    echo '</div>';
+    ?>
+</td>
+
                <td>
                 <?php if ($user->status_permohonan == 'Selesai'): ?>
                     <a type="button" class="btn btn-info btn-ulasan" data-toggle="modal" data-target="#modalKomentar" data-id="<?= $user->id_permohonan ?>" data-nama="<?= $user->permohonan_nama ?>"><i class="mdi mdi-bell"></i> <span>Berikan Ulasan</span></a>

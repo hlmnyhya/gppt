@@ -74,5 +74,19 @@ class Antrian extends CI_Controller {
         // Redirect ke halaman utama atau halaman yang sesuai
         redirect('antrian/index');
     }
+
+        // Di controller atau file yang sesuai di server
+public function getDataByIdAntrian($id_antrian) {
+    // Ambil data dari tabel 'antrian' berdasarkan id_antrian
+    $this->db->select('antrian.id_antrian, antrian.id_instansi, antrian.nomor_antrian, antrian.status_antrian, antrian.tanggal, instansi.nama_instansi, instansi.kode, instansi.gambar_instansi');
+    $this->db->from('antrian');
+    $this->db->join('instansi', 'antrian.id_instansi = instansi.id_instansi');
+    $this->db->where('antrian.id_antrian', $id_antrian);
+    $data = $this->db->get()->row();
+
+    // Kirim data dalam format JSON
+    echo json_encode($data);
+}
+
 }
 ?>

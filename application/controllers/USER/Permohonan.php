@@ -88,56 +88,18 @@ WHERE
         'id_layanan' => $id_layanan,
         'id_layanan_detail' => $id_layanan_detail,
         'status_permohonan' => $status_permohonan,
-        'alasan' => '',
+        'alasan' => 'Permohonan anda sedang diajukan', // Use the actual value of $alasan
     );
 
     $inserted_permohonan = $this->db->insert('permohonan', $data_permohonan);
 
     if ($inserted_permohonan) {
-        // Jika data permohonan berhasil diinsert, ambil ID permohonan yang baru diinsert
-        $id_permohonan = $this->db->insert_id();
-
-        // Ambil kode dari tabel 'instansi' berdasarkan id_instansi
-        $instansi_data = $this->db->select('kode')->where('id_instansi', $id_instansi)->get('instansi')->row();
-        $awalan_instansi = ($instansi_data) ? $instansi_data->kode : '';
-
-        // Ambil dan increment nomor_antrian sesuai dengan id_instansi
-        $last_nomor_antrian = $this->get_last_nomor_antrian($id_instansi);
-        $nomor_antrian = $last_nomor_antrian + 1;
-
-        // Update last used nomor_antrian for the current id_instansi
-        $this->update_last_nomor_antrian($id_instansi, $nomor_antrian);
-
-        // Format nomor antrian sesuai dengan yang diinginkan (Instansi code + incrementing number)
-        $nomor_antrian_formatted = $awalan_instansi . sprintf('%03d', $nomor_antrian);
-
-        // Insert data ke tabel 'antrian' dengan menyertakan ID permohonan
-        $data_antrian = array(
-            'id_user' => $this->session->userdata('id_user'),
-            'id_instansi' => $id_instansi,
-            'id_layanan' => $id_layanan,
-            'id_permohonan' => $id_permohonan,
-            'nomor_antrian' => $nomor_antrian_formatted,
-            'status_antrian' => 'Menunggu',
-        );
-
-        $inserted_antrian = $this->db->insert('antrian', $data_antrian);
-
-        if ($inserted_antrian) {
-            $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-                <strong>Data berhasil ditambahkan!</strong>
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>');
-        } else {
-            $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-                <strong>Gagal menambahkan data antrian.</strong> Silakan coba lagi nanti.
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>');
-        }
+        $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Berhasil menambahkan data permohonan.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>');
     } else {
         $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
             <strong>Gagal menambahkan data permohonan.</strong> Silakan coba lagi nanti.
@@ -213,10 +175,6 @@ public function delete_data_aksi($id_permohonan)
 
     // Hapus data di tabel 'permohonan'
     $this->M_permohonan->delete_data($where, 'permohonan');
-
-    // Hapus data di tabel 'antrian' berdasarkan id_permohonan
-    $where_antrian = array('id_permohonan' => $id_permohonan);
-    $this->M_antrian->delete_data($where_antrian, 'antrian');
 
     redirect('user/permohonan');
 }

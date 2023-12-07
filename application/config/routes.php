@@ -58,6 +58,7 @@ $route['detail_instansi/(:any)'] = 'Welcome/detail_instansi/$1';
 $route['detail_layanan/(:any)'] = 'Welcome/detail_layanan/$1';
 $route['detail_layanan_detail/(:any)'] = 'Welcome/detail_layanan_detail/$1';
 $route['antrian/masyarakat'] = 'Antrian/index';
+$route['blanko'] = 'BlankoPage/index';
 
 
 // Start AUTH ROUTE
@@ -127,6 +128,14 @@ $route['upload_berkas'] = 'ADMIN/MultiUpload/upload_berkas';
 $route['remove_berkas'] = 'ADMIN/MultiUpload/remove_berkas';
 
 $route['admin/permohonan/detail_berkas/(:any)'] = 'ADMIN/Permohonan/detail_berkas/$1';
+
+$route['admin/antrian/daftar'] = 'ADMIN/AntrianAdmin/index';
+$route['admin/antrian/selesai/(:num)'] = 'ADMIN/AntrianAdmin/selesai_antrian/$1';
+
+$route['admin/blanko'] = 'ADMIN/Blanko/index';
+$route['admin/blanko/tambah'] = 'ADMIN/Blanko/tambah_data_aksi';
+$route['admin/blanko/ubah'] = 'ADMIN/Blanko/update_data_aksi';
+$route['admin/blanko/delete/(:num)'] = 'ADMIN/Blanko/delete_data_aksi/$1';
 // End ADMIN ROUTE
 
 // Start ADMIN ROUTE

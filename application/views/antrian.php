@@ -51,12 +51,18 @@
 
       <nav id="navbar" class="navbar">
         <ul>
-          <li><a class="nav-link scrollto active" href="#hero">Beranda</a></li>
-          <li><a class="nav-link scrollto" href="#about">Tentang GPPT</a></li>
-          <li><a class="nav-link scrollto" href="#features">Instansi</a></li>
-          <li><a class="nav-link scrollto" href="#gallery">Galeri</a></li>
-          <li><a class="nav-link scrollto" href="#team">Berita</a></li>
-          <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
+          <li><a class="nav-link scrollto" href="<?= base_url('')?>">Beranda</a></li>
+          <li><a class="nav-link scrollto" href="<?= base_url('')?>">Tentang GPPT</a></li>
+          <li><a class="nav-link scrollto" href="<?= base_url('')?>">Instansi</a></li>
+          <li><a class="nav-link scrollto" href="<?= base_url('')?>">Galeri</a></li>
+          <li><a class="nav-link scrollto" href="<?= base_url('')?>">Berita</a></li>
+          <li><a class="nav-link scrollto" href="<?= base_url('')?>">Kontak</a></li>
+          <li class="dropdown"><a href="#"><span>Cetak Mandiri</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="<?= base_url('blanko')?>">Cetak Form Pendaftaran</a></li>
+              <!-- <li><a href="#">Drop Down 2</a></li> -->
+            </ul>
+          </li>
           <li><a class="nav-link scrollto" href="<?= base_url('antrian/masyarakat')?>">Ambil Antrian</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
@@ -103,7 +109,19 @@
 
             if ($query->num_rows() > 0) {
                 $row = $query->row();
-                $last_nomor_antrian = $row->nomor_antrian;
+          $last_nomor_antrian = $row->nomor_antrian;
+$three_last_digits = substr($last_nomor_antrian, -3);
+
+// Konversi tiga digit terakhir menjadi angka
+$last_number = (int)$three_last_digits;
+
+// Tambahkan satu ke nomor terakhir
+$new_number = $last_number + 1;
+
+// Format ulang nomor baru ke dalam tiga digit
+$new_three_digits = str_pad($new_number, 3, '0', STR_PAD_LEFT);
+
+
                 $saved_date = $row->tanggal;
 
                 // Check if 24 hours have passed since the saved date
@@ -112,7 +130,7 @@
 
                 $interval = $current_date->diff($saved_date);
 
-                if ($interval->days >= 1) {
+                if ($interval->h >= 24) {
                     // If 24 hours have passed, reset nomor_antrian to 1
                     $nomor_antrian = 1;
                 } else {
@@ -120,19 +138,29 @@
                     $nomor_antrian = intval(substr($last_nomor_antrian, 1)) + 1;
                 }
             } else {
-                // If no rows are returned, set a default starting value
+                // If no rows are returned, set default values
                 $nomor_antrian = 1;
             }
 
+            // Retrieve the entry count grouped by tanggal
+            $this->db->select('COUNT(*) as entry_count');
+            $this->db->from('antrian');
+            $this->db->where('id_instansi', $user->id_instansi);
+            $this->db->group_by('tanggal'); // Group by tanggal
+            $entry_query = $this->db->get();
+            $entry_count = $entry_query->num_rows() > 0 ? $entry_query->num_rows() : 0;
+
             // Generate the formatted nomor_antrian (e.g., A001)
-            $formatted_nomor_antrian = strtoupper(substr($user->kode, 0, 1)) . str_pad($nomor_antrian, 3, '0', STR_PAD_LEFT);
+            $formatted_nomor_antrian = $user->kode . '00' . $nomor_antrian;
+
         ?>
         <div class="col-lg-3 col-md-4 mt-4 card-container" 
              data-id="<?= $user->id_instansi; ?>"
              data-nama-instansi="<?= $user->nama_instansi; ?>"
              data-loket="<?= $user->kode; ?>"
              data-nomor-antrian="<?= $formatted_nomor_antrian; ?>"
-             data-gambar="<?= $user->gambar_instansi?>">
+             data-gambar="<?= $user->gambar_instansi;?>"
+             data-sisa="<?= $entry_count;?>">
             <a href="#" class="antrian-link">
                 <div class="icon-box" data-aos="zoom-in" data-aos-delay="50">
                     <img src="<?= base_url('./uploads/instansi/'.$user->gambar_instansi); ?>" width="80px" height="100px" alt="Gambar Instansi">
@@ -142,6 +170,8 @@
         </div>
     <?php endforeach; ?>
 </div>
+
+
 
 
 
@@ -194,7 +224,7 @@
 
   <!-- Template Main JS File -->
   <script src="<?= base_url();?>assets2/js/main.js"></script>
-    
+  
   <script>
     $(document).ready(function () {
         // Use delegated event handling to handle dynamically added elements
@@ -207,6 +237,7 @@
             var nomor_antrian = $(this).closest('.card-container').data('nomor-antrian');
             var nama_instansi = $(this).closest('.card-container').data('nama-instansi');
             var gambar = $(this).closest('.card-container').data('gambar');
+            var sisa = $(this).closest('.card-container').data('sisa');
 
             // Make an AJAX request to the controller
             $.ajax({
@@ -223,12 +254,17 @@
                     console.log(response);
 
                     // Display SweetAlert after a successful AJAX request
+                    var formattedDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                    var formattedTime = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+
                     Swal.fire({
                         title: 'Nomor Antrian Anda',
                        html: '<center><img src="<?= base_url('./uploads/instansi/') ?>' + gambar + '" width="50px"></img></center>' +
-                              '<p>Instansi yang dipilih: ' + nama_instansi + '</p>' +
-                              '<p>Loket: ' + loket + '</p>' +
-                              '<p>Nomor Antrian: ' + nomor_antrian + '</p>',
+'<p>Instansi yang dipilih: ' + nama_instansi + '</p>' +
+'<p>Loket: ' + loket + '</p>' +
+'<p>Nomor Antrian: ' + nomor_antrian + '</p>' +
+'<p>Sisa Antrian: ' + sisa + '</p>',
+
                         icon: 'success',
                         showCancelButton: true,
                         confirmButtonColor: '#3085d6',
@@ -240,37 +276,36 @@
                             // Handle the logic for printing the queue card (e.g., open a new window or perform AJAX request)
                             // For demonstration purposes, let's open a new window with a print-friendly version
                             var printWindow = window.open('', '_blank');
-var currentDate = new Date();
-var formattedDate = currentDate.toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
-var formattedTime = currentDate.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                var currentDate = new Date();
+                var formattedDate = currentDate.toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+                var formattedTime = currentDate.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                            printWindow.document.write('<html><head><title>Kartu Antrian</title>');
+                            printWindow.document.write('<style>');
+                            printWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; width: 30%; }');
+                            printWindow.document.write('img { border-top: 1px solid #333; }'); // Add border to the image
+                            printWindow.document.write('h5 { color: #333; padding-bottom: 2px; }'); // Add border to h5
+                            printWindow.document.write('p { font-size: 10px; padding-bottom: 5px; margin-bottom: 5px; }'); // Add border to p
+                            printWindow.document.write('p.kop { font-size: 10px; border-bottom: 1px dashed; padding-bottom: 5px; margin-bottom: 5px; }'); // Add border to p with class "kop"
+                            printWindow.document.write('</style>');
+                            printWindow.document.write('</head><body>');
 
-printWindow.document.write('<html><head><title>Kartu Antrian</title>');
-printWindow.document.write('<style>');
-printWindow.document.write('body { font-family: Arial, sans-serif; margin: 20px; width: 20%; }');
-printWindow.document.write('img { border-top: 1px solid #333; }'); // Add border to the image
-printWindow.document.write('h5 { color: #333; border-bottom: 1px solid #333; padding-bottom: 5px; }'); // Add border to h5
-printWindow.document.write('p { font-size: 12px; border-bottom: 1px solid #333; padding-bottom: 5px; margin-bottom: 5px; }'); // Add border to p
-printWindow.document.write('</style>');
-printWindow.document.write('</head><body>');
+                            // Content
+                            printWindow.document.write('<center><p class="kop">DINAS PENANAMAN MODAL DAN PELAYANAN TERPADU SATU PINTU<br>KOTA BANJARBARU</p>');
+                            printWindow.document.write('<p>Pelayanan Pada: ' + nama_instansi +'</p>');
+                            printWindow.document.write('<h5>Loket: ' + loket +'</h5>');
+                            printWindow.document.write('<h5>No Antrian: ' + nomor_antrian + '</h5>');
+                            printWindow.document.write('<p>Sisa Antrian: ' + sisa + '</p>');
+                            printWindow.document.write('<p>' + formattedDate + ' ' + formattedTime + ' ' + 'Silakan Menunggu, Nomor Antrian Anda Akan Dipanggil <br> Sesuai Urutan, Terima Kasih!</p></center>');
+                            // Add date and time
+                            // printWindow.document.write('<p>Jam: ' + formattedTime + '</p>');
 
-// Content
-printWindow.document.write('<center><img src="<?= base_url('./uploads/instansi/') ?>' + gambar + '" width="50px"></img></center>');
-printWindow.document.write('<center><p>Hari/Tanggal: ' + formattedDate +' ' + formattedTime +'</p>');
-printWindow.document.write('<h5>'+ nama_instansi +'</h5>');
-printWindow.document.write('<p>Loket: ' + loket + '</p>');
-printWindow.document.write('<h5>No Antrian: ' + nomor_antrian + '</h5></center>');
-// Add date and time
-// printWindow.document.write('<p>Jam: ' + formattedTime + '</p>');
+                            printWindow.document.write('</body></html>');
+                            printWindow.document.close();
+                            printWindow.print();
 
-printWindow.document.write('</body></html>');
-printWindow.document.close();
-printWindow.print();
-
-setTimeout(function () {
-                            location.reload();
-                        }, 0001);
-
-
+                            setTimeout(function () {
+                                location.reload();
+                            }, 0001);
                         }
                     });
                 },
@@ -283,9 +318,7 @@ setTimeout(function () {
     });
 </script>
 
-
-
-
+ 
 </body>
 
 </html>

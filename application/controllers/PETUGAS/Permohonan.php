@@ -88,36 +88,21 @@ WHERE
         'id_layanan' => $id_layanan,
         'id_layanan_detail' => $id_layanan_detail,
         'status_permohonan' => $status_permohonan,
-        'alasan' => '',
+        'alasan' => 'Permohonan anda sedang diajukan', // Use the actual value of $alasan
     );
 
     $inserted_permohonan = $this->db->insert('permohonan', $data_permohonan);
 
-    // Ambil nomor_antrian terakhir dari tabel 'antrian'
-    $last_antrian = $this->db->select_max('nomor_antrian')->get('antrian')->row();
-    $nomor_antrian = $last_antrian ? $last_antrian->nomor_antrian + 1 : 1;
-
-    // Insert data ke tabel 'antrian'
-    $data_antrian = array(
-        'id_user' => $this->session->userdata('id_user'),
-        'id_instansi' => $id_instansi,
-        'id_layanan' => $id_layanan,
-        'nomor_antrian' => $nomor_antrian,
-        'status_antrian' => 'Menunggu',
-    );
-
-    $inserted_antrian = $this->db->insert('antrian', $data_antrian);
-
-    if ($inserted_permohonan && $inserted_antrian) {
-        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
-            <strong>Data berhasil ditambahkan!</strong>
+    if ($inserted_permohonan) {
+        $this->session->set_flashdata('success', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Berhasil menambahkan data permohonan.</strong>
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
         </div>');
     } else {
         $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <strong>Gagal menambahkan data.</strong> Silakan coba lagi nanti.
+            <strong>Gagal menambahkan data permohonan.</strong> Silakan coba lagi nanti.
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -297,11 +282,6 @@ public function delete_data_aksi($id_permohonan)
 
     // Hapus data di tabel 'permohonan'
     $this->M_permohonan->delete_data($where, 'permohonan');
-
-    // Hapus data di tabel 'antrian' berdasarkan id_permohonan
-    $where_antrian = array('id_permohonan' => $id_permohonan);
-    $this->M_antrian->delete_data($where_antrian, 'antrian');
-
     redirect('petugas/permohonan');
 }
 

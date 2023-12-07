@@ -94,6 +94,7 @@
                             <li><a href="<?= base_url('admin/layanan')?>">Layanan</a></li>
                             <li><a href="<?= base_url('admin/layanan_detail')?>">Detail Layanan</a></li>
                             <li><a href="<?= base_url('admin/berita')?>">Berita</a></li>
+                            <li><a href="<?= base_url('admin/blanko')?>">Blanko</a></li>
                             <li><a href="<?= base_url('admin/syarat')?>">Syarat</a></li>
                             <li><a href="<?= base_url('admin/komentar')?>">Komentar</a></li>
                             <li><a href="<?= base_url('admin/galeri')?>">Galeri</a></li>
@@ -153,6 +154,13 @@
                                 class="icon icon-form"></i><span class="nav-text">Layanan</span></a>
                         <ul aria-expanded="false">
                             <li><a href="<?= base_url('admin/permohonan')?>">Permohonan Layanan</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-label">Daftar Antrian</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-form"></i><span class="nav-text">Antrian</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="<?= base_url('admin/antrian/daftar')?>">Daftar Antrian</a></li>
                         </ul>
                     </li>
                     <!-- <li class="nav-label">Table</li>
