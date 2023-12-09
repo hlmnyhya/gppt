@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 07, 2023 at 07:55 AM
+-- Generation Time: Dec 09, 2023 at 09:10 PM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -165,8 +165,7 @@ INSERT INTO `instansi` (`id_instansi`, `nama_instansi`, `kode`, `gambar_instansi
 (2, 'BPJS KESEHATAN', 'B', 0x62706a73342e6a7067),
 (3, 'POLRES BANJARBARU', 'C', 0x706f6c726573312e706e67),
 (4, 'BANK KALSEL', 'D', 0x62616e6b6b616c73656c312e706e67),
-(5, 'SAMSAT BANJARBARU', 'E', 0x73616d736174312e706e67),
-(6, 'POLRES BANJARBARU', 'C', 0x706f6c726573332e706e67);
+(6, 'DISDUKCAPIL', 'E', 0x6d70705f69636f6e352e706e67);
 
 -- --------------------------------------------------------
 
