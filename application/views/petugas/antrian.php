@@ -41,6 +41,11 @@
                                 </thead>
                                 <tbody>
     <?php $no=1; foreach ($antrian as $user): ?>
+                                                    <?php
+        // Dapatkan id_user dari sesi
+        $id_instansi = $this->session->userdata('id_instansi');
+    ?>
+    <?php if ($user->id_instansi == $id_instansi): ?>
         <tr>
             <td><?php echo $no++ ?></td>
             <td><?php echo $user->nama_instansi; ?></td>
@@ -64,6 +69,7 @@
                 </a>
             </td>
         </tr>
+    <?php endif; ?>
     <?php endforeach; ?>
 </tbody>
 

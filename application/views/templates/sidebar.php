@@ -149,13 +149,6 @@
                     </li>
                     <li><a href="widget-basic.html" aria-expanded="false"><i class="icon icon-globe-2"></i><span
                                 class="nav-text">Widget</span></a></li> -->
-                    <li class="nav-label">Layanan</li>
-                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
-                                class="icon icon-form"></i><span class="nav-text">Layanan</span></a>
-                        <ul aria-expanded="false">
-                            <li><a href="<?= base_url('admin/permohonan')?>">Permohonan Layanan</a></li>
-                        </ul>
-                    </li>
                     <li class="nav-label">Daftar Antrian</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-form"></i><span class="nav-text">Antrian</span></a>
@@ -163,6 +156,14 @@
                             <li><a href="<?= base_url('admin/antrian/daftar')?>">Daftar Antrian</a></li>
                         </ul>
                     </li>
+                    <li class="nav-label">Layanan</li>
+                    <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
+                                class="icon icon-form"></i><span class="nav-text">Layanan</span></a>
+                        <ul aria-expanded="false">
+                            <li><a href="<?= base_url('admin/permohonan')?>">Permohonan Layanan</a></li>
+                        </ul>
+                    </li>
+                  
                     <!-- <li class="nav-label">Table</li>
                     <li><a class="has-arrow" href="javascript:void()" aria-expanded="false"><i
                                 class="icon icon-layout-25"></i><span class="nav-text">Table</span></a>

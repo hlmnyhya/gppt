@@ -196,6 +196,9 @@ $route['upload_berkas'] = 'PETUGAS/MultiUpload/upload_berkas';
 $route['remove_berkas'] = 'PETUGAS/MultiUpload/remove_berkas';
 
 $route['petugas/permohonan/detail_berkas/(:any)'] = 'PETUGAS/Permohonan/detail_berkas/$1';
+
+$route['petugas/antrian/daftar'] = 'PETUGAS/AntrianPetugas/index';
+$route['petugas/antrian/selesai/(:num)'] = 'PETUGAS/AntrianPetugas/selesai_antrian/$1';
 // End ADMIN ROUTE
 
 // Start USER ROUTE
