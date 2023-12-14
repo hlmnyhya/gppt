@@ -60,7 +60,6 @@ $route['detail_layanan_detail/(:any)'] = 'Welcome/detail_layanan_detail/$1';
 $route['antrian/masyarakat'] = 'Antrian/index';
 $route['blanko'] = 'BlankoPage/index';
 
-
 // Start AUTH ROUTE
 $route['auth/logout'] = 'Login/logout';
 $route['auth/login'] = 'Login/index';
@@ -131,6 +130,7 @@ $route['admin/permohonan/detail_berkas/(:any)'] = 'ADMIN/Permohonan/detail_berka
 
 $route['admin/antrian/daftar'] = 'ADMIN/AntrianAdmin/index';
 $route['admin/antrian/selesai/(:num)'] = 'ADMIN/AntrianAdmin/selesai_antrian/$1';
+$route['admin/antrian/reset'] = 'ADMIN/AntrianAdmin/reset';
 
 $route['admin/blanko'] = 'ADMIN/Blanko/index';
 $route['admin/blanko/tambah'] = 'ADMIN/Blanko/tambah_data_aksi';
@@ -199,6 +199,8 @@ $route['petugas/permohonan/detail_berkas/(:any)'] = 'PETUGAS/Permohonan/detail_b
 
 $route['petugas/antrian/daftar'] = 'PETUGAS/AntrianPetugas/index';
 $route['petugas/antrian/selesai/(:num)'] = 'PETUGAS/AntrianPetugas/selesai_antrian/$1';
+$route['petugas/antrian/reset/(:num)'] = 'PETUGAS/AntrianPetugas/reset/$1';
+
 // End ADMIN ROUTE
 
 // Start USER ROUTE

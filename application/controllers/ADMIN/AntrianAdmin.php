@@ -50,5 +50,41 @@ class AntrianAdmin extends CI_Controller {
 
     echo json_encode($response);
 }
+
+public function reset() 
+{
+    // Perform the truncate operation
+    $result = $this->db->query("TRUNCATE TABLE antrian");
+
+    // Check the result of the truncate operation
+    if ($result) {
+        $this->session->set_flashdata('pesan', '<div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Data Antrian berhasil direset!</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>');
+        $response = array('success' => true, 'message' => 'Berhasil reset antrian.');
+    } else {
+        $this->session->set_flashdata('error', '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Gagal reset antrian. Silakan coba lagi nanti.</strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>');
+        $response = array('success' => false, 'message' => 'Gagal reset antrian. Silakan coba lagi nanti.');
+    }
+
+    // Redirect to another page
+    redirect('admin/antrian/daftar');
+
+    // Note: The code after redirect will not be executed
+
+    // If you still want to send a JSON response, you should exit the script
+    exit(json_encode($response));
+}
+
+
+
 }
 

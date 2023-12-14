@@ -23,13 +23,14 @@
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title">Data Antrian</h4>
+                        <!-- <a href="<?= base_url('admin/antrian/reset')?>" type="button" class="btn btn-danger">Reset Antrian<span class="btn-icon-right"><i class="fa fa-refresh"></i></span></a> -->
+                       <button type="button" class="btn btn-danger btn-hapus" id="btnResetAntrian" >Reset Antrian<span class="btn-icon-right"><i class="fa fa-refresh"></i></span></button>
                     </div>
                     <div class="card-header">
-                        <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalTambahSyarat">Tambah Data<span class="btn-icon-right"><i class="fa fa-plus"></i></span></button> -->
-                    </div>
-                    <div class="card-body">
-                        <div class="table-responsive text-dark">
-                            <table id="example" class="display" style="min-width: 845px">
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive text-dark">
+                                <table id="example" class="display" style="min-width: 845px">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -78,6 +79,26 @@
 <!--**********************************
     Content body end
 ***********************************-->
+<!-- Modal Hapus -->
+<div class="modal fade" id="modalKonfirmasiHapus" tabindex="-1" role="dialog" aria-labelledby="modalKonfirmasiHapusLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalKonfirmasiHapusLabel">Konfirmasi Hapus</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-dark">Anda yakin ingin menghapus data ini?</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="button" class="btn btn-danger btn-hapus-confirm">Hapus</button>
+            </div>
+        </div>
+    </div>
+</div>
 
  <script>
     function speakPanggil(id_antrian) {
@@ -171,3 +192,17 @@ function showErrorMessage(message) {
 </script>
 
 
+<script>
+    $(document).ready(function () {
+        // Menampilkan modal konfirmasi saat tombol hapus di-klik
+        $('.btn-hapus').click(function () {
+            $('#modalKonfirmasiHapus').modal('show');
+
+            // Menangani aksi penghapusan setelah konfirmasi
+            $('.btn-hapus-confirm').click(function () {
+                // Kirim permintaan penghapusan ke server
+                window.location.href = '<?= base_url('admin/antrian/reset') ?>';
+            });
+        });
+    });
+</script>

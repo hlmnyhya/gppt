@@ -46,8 +46,8 @@
                                             <?php $no=1; foreach ($instansi as $user): ?>
                                                 <tr>
                                                     <td><?php echo $no++ ?></td>    
-                                                    <td><?php echo $user->nama_instansi; ?></td>
                                                     <td><?php echo $user->kode; ?></td>
+                                                    <td><?php echo $user->nama_instansi; ?></td>
                                                     <td><img src="<?php echo base_url('./uploads/instansi/'.$user->gambar_instansi); ?>" width="100px" height="120px" alt="Gambar User"></td>
                                                     <td>
                                                         <a type="button" class="btn btn-warning btn-ubah" data-toggle="modal" data-target="#modalUpdateInstansi" data-id="<?= $user->id_instansi ?>" data-nama="<?= $user->nama_instansi ?>"><i class="mdi mdi-pencil"></i> <span>Ubah</span></a>
