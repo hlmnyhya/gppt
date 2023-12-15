@@ -33,6 +33,8 @@ public function tambah_data_aksi()
     $this->upload->initialize($config_layanan);
 
     if (!$this->upload->do_upload('gambar_layanan')) {
+        // Jika tidak ada file yang diunggah, gunakan gambar default
+        $gambar = 'R.png';
         // Jika upload gagal, atur pesan validasi dan kembali ke halaman sebelumnya
         $error = $this->upload->display_errors();
         $this->session->set_flashdata('error', $error);

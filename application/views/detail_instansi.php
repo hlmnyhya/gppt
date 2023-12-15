@@ -57,6 +57,12 @@
           <li><a class="nav-link scrollto" href="#gallery">Galeri</a></li>
           <li><a class="nav-link scrollto" href="#team">Berita</a></li>
           <li><a class="nav-link scrollto" href="#contact">Kontak</a></li>
+          <li class="dropdown"><a href="#"><span>Cetak Mandiri</span> <i class="bi bi-chevron-down"></i></a>
+            <ul>
+              <li><a href="<?= base_url('blanko')?>">Cetak Form Pendaftaran</a></li>
+              <!-- <li><a href="#">Drop Down 2</a></li> -->
+            </ul>
+          </li>
           <li><a class="nav-link scrollto" href="<?= base_url('antrian/masyarakat')?>">Ambil Antrian</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
