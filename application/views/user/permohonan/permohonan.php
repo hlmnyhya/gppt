@@ -58,7 +58,15 @@ Content body start
                 <td><?= $user->permohonan_nama; ?></td>
                 <td><?= $user->nama_layanan; ?></td>
                 <td><?= $user->nama_layanan_detail; ?></td>
-                <td><?php echo nl2br(implode(explode('<br>', $user->syarat))); ?></td>
+                                                            <td>
+    <?php
+    if (!empty($user->syarat)) {
+        echo nl2br(implode(explode('<br>', $user->syarat ?? '')));
+    } else {
+        echo 'Syarat tidak ada';
+    }
+    ?>
+</td>
                 <td>
                     <center>
                         <?php
